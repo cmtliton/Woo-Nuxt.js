@@ -1,0 +1,29 @@
+{
+  "name": "emc-furniture",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "1.12.1",
+    "@nuxt/image": "2.0.0",
+    "@pinia/nuxt": "0.11.3",
+    "@woocommerce/woocommerce-rest-api": "^1.0.2",
+    "eslint": "^9.39.2",
+    "nuxt": "^4.2.2",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.4",
+    "vuetify-nuxt-module": "0.19.1"
+  },
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

@@ -157,13 +157,14 @@
 <script setup>
 const route = useRoute();
 const router = useRouter();
+const productsStore = useProductsStore();
+const cartStore = useCartStore();
 
 // রিয়্যাক্টিভ স্টেট
 const page = ref(1);
 const selectedCategory = ref(route.query.category || null);
 const sortBy = ref("date");
 const mobileDrawer = ref(false);
-const cartStore = useCartStore();
 
 const sortOptions = [
   { label: "Newest First", value: "date" },
@@ -175,8 +176,6 @@ const sortOptions = [
 // ১. ক্যাটাগরি ফেচ করা (সাইডবারের জন্য)
 //const { data: categories } = await useFetch("/api/categories");
 const categories = useCategoriesStore().getCategories;
-const productsStore = useProductsStore();
-
 // ২. প্রোডাক্ট ফেচ করা (স্টোর থেকে)
 const products = computed(() => productsStore.filteredProducts);
 const pending = computed(() => productsStore.pending);

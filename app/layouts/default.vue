@@ -6,4 +6,7 @@
     </v-main>
   </v-app>
 </template>
-<script setup></script>
+<script setup>
+const productsStore = useProductsStore();
+productsStore.getProducts.length === 0 ? productsStore.setProducts() : null;
+</script>

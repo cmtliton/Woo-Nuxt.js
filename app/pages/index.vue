@@ -28,7 +28,6 @@
 <script setup>
 //const { fetchProducts } = useProducts();
 const cartStore = useCartStore();
-const categoriesStore = useCategoriesStore();
 const productsStore = useProductsStore();
 
 const pending = ref(false);
@@ -42,7 +41,4 @@ useSeoMeta({
     "Shop our curated collection of high-quality furniture for your home.",
   ogImage: "/og-home.jpg",
 });
-
-// ক্যাটাগরি স্টোর ইনিশিয়ালাইজ করা
-categoriesStore.setCategories();
 </script>

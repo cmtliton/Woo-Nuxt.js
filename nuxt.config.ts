@@ -3,9 +3,9 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: true },
   modules: [
-    "vuetify-nuxt-module",
     "@pinia/nuxt",
     "pinia-plugin-persistedstate/nuxt",
+    "vuetify-nuxt-module",
     "@nuxt/image",
     "@nuxt/eslint",
   ],
@@ -39,10 +39,10 @@ export default defineNuxtConfig({
   //   "/checkout/**": { ssr: false },
   // },
   image: {
-    // আপনার ওয়ার্ডপ্রেস ডোমেইন এখানে দিন
     domains: ["emcfurniture.com"],
-
-    // Netlify-এর জন্য 'ipx' হলো ডিফল্ট প্রোভাইডার
+    // Use format: ['webp', 'avif'] to automatically convert heavy JPEGs
+    format: ["webp"],
+    quality: 80,
     provider: "ipx",
   },
 });

@@ -28,13 +28,15 @@
             <NuxtImg
               :src="selectedImage || product.images[0]?.src"
               :alt="product.name"
-              loading="lazy"
-              placeholder
-              aspect-ratio="1"
+              preload
+              fetchpriority="high"
+              loading="eager"
+              format="webp"
+              width="600"
+              height="600"
               fit="contain"
-              class="bg-grey-lighten-4 w-100 h-100"
-              @load="imageLoading = false"
-              @loadstart="imageLoading = true"
+              class="bg-grey-lighten-4 w-100 h-100 transition-fade"
+              :placeholder="[50, 50, 75, 5]"
             />
           </div>
         </v-card>
@@ -52,10 +54,13 @@
               >
                 <NuxtImg
                   :src="img.src"
+                  width="100"
+                  height="100"
                   aspect-ratio="1"
                   fit="cover"
+                  format="webp"
                   class="w-100 h-100"
-                  densities="x1 93w, x2 186w"
+                  loading="lazy"
                 />
               </v-card>
             </v-hover>
@@ -183,7 +188,18 @@ const tab = ref("desc");
 const selectedImage = ref(null);
 const rating = ref(0);
 const imageLoading = ref(false);
-//const { data: product, pending } = await fetchProductBySlug(route.params.slug);
+
+// Preload the main image to improve LCP (Largest Contentful Paint)
+useHead({
+  link: [
+    {
+      rel: "preload",
+      as: "image",
+      href: product.value?.images[0]?.src,
+      imagesrcset: product.value?.images[0]?.srcset, // If available
+    },
+  ],
+});
 
 watch(product, (p) => {
   rating.value = p?.average_rating ? Number(p.average_rating) : 0;

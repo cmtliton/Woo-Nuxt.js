@@ -5,20 +5,18 @@
         >duration change suppressed - prefers-reduced-motion: reduce</v-code
       >
     </div>
-    <v-carousel height="460" transition-duration="600">
+    <v-carousel height="460" :transition-duration="20">
       <v-carousel-item v-for="(src, i) in items" :key="i" :src="src" cover />
     </v-carousel>
   </v-container>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      items: ["./images/hero1.jpg", "./images/hero2.jpg", "./images/hero3.jpg"],
-    };
-  },
-};
+<script setup lang="ts">
+const items = [
+  "./images/hero1.jpg",
+  "./images/hero2.jpg",
+  "./images/hero3.jpg",
+];
 </script>
 
 <style>

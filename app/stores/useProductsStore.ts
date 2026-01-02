@@ -36,6 +36,36 @@ export const useProductsStore = defineStore(
     /**
      * ৪. অ্যাকশন (Action) - ২: ফিল্টার অনুযায়ী প্রোডাক্ট লোড করা
      */
+    // const fetchFilteredProducts = async (filters: {
+    //   page?: number;
+    //   category?: number | null;
+    //   orderby?: string;
+    //   order?: string;
+    //   per_page?: number;
+    // }) => {
+    //   try {
+    //     pending.value = true;
+
+    //     // ফিক্স: $fetch সরাসরি ডাটা রিটার্ন করে, তাই .value করার দরকার নেই
+    //     const data = await $fetch<any[]>("/api/products", {
+    //       query: {
+    //         page: filters.page || 1,
+    //         category: filters.category || undefined,
+    //         orderby: filters.orderby || "date",
+    //         order: filters.order || "desc",
+    //         per_page: filters.per_page || 12,
+    //       },
+    //     });
+
+    //     filteredProducts.value = data || [];
+    //   } catch (error) {
+    //     console.error("fetchFilteredProducts Error:", error);
+    //     filteredProducts.value = [];
+    //   } finally {
+    //     pending.value = false;
+    //   }
+    // };
+
     const fetchFilteredProducts = async (filters: {
       page?: number;
       category?: number | null;
@@ -46,22 +76,56 @@ export const useProductsStore = defineStore(
       try {
         pending.value = true;
 
-        // ফিক্স: $fetch সরাসরি ডাটা রিটার্ন করে, তাই .value করার দরকার নেই
-        const data = await $fetch<any[]>("/api/products", {
-          query: {
-            page: filters.page || 1,
-            category: filters.category || undefined,
-            orderby: filters.orderby || "date",
-            order: filters.order || "desc",
-            per_page: filters.per_page || 12,
-          },
+        // 1. Start with a copy of the full products array from state
+        let result = [...products.value];
+
+        // 2. Filter by Category
+        if (filters.category) {
+          result = result.filter((p) =>
+            p.categories.some((cat: any) => cat.id === filters.category)
+          );
+        }
+
+        // 3. Sorting Logic
+        const orderby = filters.orderby || "date"; // 'date', 'price', or 'name'
+        const order = filters.order || "desc"; // 'asc' or 'desc'
+
+        result.sort((a, b) => {
+          let valA: any, valB: any;
+
+          if (orderby === "price") {
+            valA = parseFloat(a.price) || 0;
+            valB = parseFloat(b.price) || 0;
+          } else if (orderby === "name") {
+            valA = a.name.toLowerCase();
+            valB = b.name.toLowerCase();
+          } else {
+            // Default to date_created
+            valA = new Date(a.date_created).getTime();
+            valB = new Date(b.date_created).getTime();
+          }
+
+          if (order === "asc") {
+            return valA > valB ? 1 : -1;
+          } else {
+            return valA < valB ? 1 : -1;
+          }
         });
 
-        filteredProducts.value = data || [];
+        // 4. Pagination (Local Slicing)
+        const perPage = filters.per_page || 12;
+        const page = filters.page || 1;
+        const start = (page - 1) * perPage;
+        const end = start + perPage;
+
+        // 5. Update the state with the processed subset
+        filteredProducts.value = result.slice(start, end);
       } catch (error) {
-        console.error("fetchFilteredProducts Error:", error);
+        console.error("Local fetchFilteredProducts Error:", error);
         filteredProducts.value = [];
       } finally {
+        // Simulated delay if you want to keep the UI loader visible momentarily
+        // await new Promise(resolve => setTimeout(resolve, 300));
         pending.value = false;
       }
     };

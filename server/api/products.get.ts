@@ -5,19 +5,24 @@ export default defineCachedEventHandler(
     const query = getQuery(event);
     try {
       const response = await api.get("products", query);
-      //return response.data;
+      // return response.data;
 
       return response.data.map((product: any) => {
         return {
           id: product.id,
           name: product.name,
           slug: product.slug,
+          permalink: product.permalink,
+          date_created: product.date_created,
+          date_modified: product.date_modified,
+          type: product.type,
           price: product.price,
           regular_price: product.regular_price,
           sale_price: product.sale_price,
           stock_status: product.stock_status,
-          date_created: product.date_created,
-          date_modified: product.date_modified,
+          status: product.status,
+          featured: product.featured,
+          sku: product.sku,
           images: product.images,
           categories: product.categories,
           description: product.description,
@@ -31,7 +36,7 @@ export default defineCachedEventHandler(
     }
   },
   {
-    maxAge: 3600, // Cache for 1 hour
+    maxAge: 0, // Cache for 1 hour
     name: "useProducts",
     swr: true, // Enable Stale-While-Revalidate
   }

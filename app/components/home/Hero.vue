@@ -39,7 +39,11 @@
 <script setup lang="ts">
 // ১. ইমেজগুলো অবশ্যই public/images ফোল্ডারে থাকতে হবে
 // ২. পাথ হিসেবে './' এর বদলে সরাসরি '/' ব্যবহার করুন
-const items = ["/images/hero1.jpg", "/images/hero2.jpg", "/images/hero3.jpg"];
+const items = [
+  "https://emcfurniture.com/wp-content/uploads/2025/12/hero1.jpg",
+  "https://emcfurniture.com/wp-content/uploads/2025/12/hero2.jpg",
+  "https://emcfurniture.com/wp-content/uploads/2025/12/hero3.jpg",
+];
 
 const titles = [
   "Premium Furniture Collection",

@@ -2,6 +2,8 @@
 <template>
   <v-container>
     <HomeHero />
+    <HomeCategorySection />
+    <HomeFeaturedSection />
     <h1 class="text-h4 mb-6">Premium Furniture</h1>
 
     <v-row v-if="pending">

@@ -4,6 +4,7 @@
     <v-main>
       <NuxtPage />
     </v-main>
+    <FootersAppFooter />
   </v-app>
 </template>
 <script setup>

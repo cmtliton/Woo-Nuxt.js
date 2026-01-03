@@ -13,6 +13,7 @@
       >
         <NuxtImg
           :src="product.images[0]?.src"
+          format="webp"
           min-height="250"
           class="w-100 h-100 rounded-t-lg bg-grey-lighten-2"
           fit="cover"
@@ -34,7 +35,7 @@
           </v-card-title>
           <v-card-subtitle>
             <span class="text-primary font-weight-black"
-              >${{ product.price }}</span
+              >৳{{ product.price }}</span
             >
           </v-card-subtitle>
         </v-card-item>
@@ -42,7 +43,7 @@
       <v-card-actions>
         <v-btn
           block
-          color="secondary"
+          color="#3b2822"
           variant="flat"
           prepend-icon="mdi-cart"
           @click="$emit('add-to-cart', product)"

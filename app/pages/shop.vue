@@ -123,34 +123,36 @@
     </v-row>
 
     <!-- মোবাইল ফিল্টার ড্রয়ার -->
-    <v-navigation-drawer
-      v-model="mobileDrawer"
-      temporary
-      location="right"
-      width="300"
-    >
-      <div class="pa-4">
-        <div class="d-flex justify-space-between align-center mb-4">
-          <span class="text-h6">Filters</span>
-          <v-btn
-            icon="mdi-close"
-            variant="text"
-            @click="mobileDrawer = false"
-          />
+    <v-sheet v-show="mobileDrawer">
+      <v-navigation-drawer
+        v-model="mobileDrawer"
+        temporary
+        location="right"
+        width="300"
+      >
+        <div class="pa-4">
+          <div class="d-flex justify-space-between align-center mb-4">
+            <span class="text-h6">Filters</span>
+            <v-btn
+              icon="mdi-close"
+              variant="text"
+              @click="mobileDrawer = false"
+            />
+          </div>
+          <!-- এখানে একই ফিল্টার লজিক থাকবে -->
+          <v-list nav>
+            <v-list-subheader>Categories</v-list-subheader>
+            <v-list-item
+              v-for="cat in categories"
+              :key="cat.id"
+              @click="filterByCategory(cat.id)"
+            >
+              {{ decodeHtml(cat.name) }}
+            </v-list-item>
+          </v-list>
         </div>
-        <!-- এখানে একই ফিল্টার লজিক থাকবে -->
-        <v-list nav>
-          <v-list-subheader>Categories</v-list-subheader>
-          <v-list-item
-            v-for="cat in categories"
-            :key="cat.id"
-            @click="filterByCategory(cat.id)"
-          >
-            {{ decodeHtml(cat.name) }}
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
+      </v-navigation-drawer>
+    </v-sheet>
   </v-container>
 </template>
 

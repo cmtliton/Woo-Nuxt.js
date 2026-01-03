@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- ২. মেইন অ্যাপ বার (Desktop + Mobile Header) -->
-    <v-app-bar flat border-b height="80">
+    <v-app-bar flat border-b height="65" color="#3b2822">
       <v-container class="d-flex align-center px-4 px-md-10">
         <!-- মোবাইল মেনু আইকন -->
         <v-app-bar-nav-icon class="d-md-none mr-2" @click="drawer = true" />
@@ -20,7 +20,7 @@
             v-for="cat in categoryTree"
             :key="cat.id"
             open-on-hover
-            width="70%"
+            width="60%"
             location="bottom"
             offset="15"
             height="300"
@@ -53,6 +53,12 @@
               </v-container>
             </v-sheet>
           </v-menu>
+          <v-btn
+            variant="text"
+            class="nav-btn h-100 px-4"
+            @click="navigateTo('/contact')"
+            >Contact Us</v-btn
+          >
         </div>
 
         <v-spacer />

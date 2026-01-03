@@ -118,7 +118,7 @@
           </v-sheet>
 
           <v-btn
-            color="primary"
+            color="#3b2822"
             size="large"
             prepend-icon="mdi-cart"
             class="flex-grow-1 flex-md-grow-0 px-10"

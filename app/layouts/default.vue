@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavBarsByTab />
+    <NavBarsTabByMegaMenu />
     <v-main>
       <NuxtPage />
     </v-main>

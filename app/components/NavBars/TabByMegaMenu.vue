@@ -57,9 +57,9 @@
 
         <v-spacer />
 
-        <!-- সার্চ ও কার্ট -->
+        <!-- *******************সার্চ ও কার্ট************* -->
         <v-btn icon="mdi-magnify" variant="text" />
-        <v-btn icon variant="text" class="cart-btn" @click="openCart">
+        <v-btn icon variant="text" class="cart-btn" @click="openCart()">
           <v-badge
             :content="cartStore.totalItems"
             :model-value="cartStore.totalItems > 0"
@@ -74,14 +74,14 @@
     <v-navigation-drawer
       v-model="drawer"
       temporary
-      width="320"
+      width="300"
       class="mobile-drawer"
     >
-      <div class="pa-4 d-flex align-center border-b">
+      <!-- <div class="pa-4 d-flex align-center border-b">
         <v-img src="/Logo.png" max-width="100" />
         <v-spacer />
         <v-btn icon="mdi-close" variant="text" @click="drawer = false" />
-      </div>
+      </div> -->
 
       <v-list v-model:opened="openedGroups" nav>
         <v-list-item to="/" title="Home" prepend-icon="mdi-home-outline" />
@@ -144,13 +144,15 @@
     </v-navigation-drawer>
 
     <!-- ৩. কার্ট ড্রয়ার (Cart Drawer) -->
-    <CartDrawer />
+    <v-sheet v-show="cartOpen">
+      <CartDrawer />
+    </v-sheet>
   </v-container>
 </template>
 <script setup>
 import { ref, provide, computed } from "vue";
-import CartDrawer from "~/components/cart/CartDrawer.vue";
 import { useCartStore } from "~/stores/cart";
+import CartDrawer from "../cart/CartDrawer.vue";
 const categoriesStore = useCategoriesStore();
 // Mobile navigation drawer state
 const drawer = ref(false);

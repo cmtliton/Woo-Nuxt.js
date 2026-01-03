@@ -59,7 +59,7 @@ useHead({
 });
 </script>
 
-<style>
+<style scoped>
 .cross-scale-enter-active,
 .cross-scale-leave-active {
   transition: 0.5s cubic-bezier(0.25, 0.8, 0.5, 1);
@@ -181,9 +181,6 @@ useHead({
     max-width: 100%;
   }
 }
-</style>
-
-<style scoped>
 .reduced-motion-info {
   display: none;
 }

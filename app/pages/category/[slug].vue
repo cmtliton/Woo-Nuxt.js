@@ -46,7 +46,7 @@
           class="mb-4"
         />
         <div class="text-h6 text-grey">No products found in this category.</div>
-        <v-btn color="primary" variant="flat" class="mt-4" to="/"
+        <v-btn color="primary" variant="flat" class="mt-4" to="/category"
           >Back to Shop</v-btn
         >
       </v-sheet>
@@ -82,7 +82,7 @@ const pending = computed(() => catPending.value || prodPending.value);
 // ব্রেডক্রাম্বস ডাটা
 const breadcrumbs = computed(() => [
   { title: "Home", disabled: false, to: "/" },
-  { title: "Categories", disabled: false, to: "#" },
+  { title: "Categories", disabled: false, to: "/category" },
   {
     title: category.value ? decodeHtml(category.value.name) : "Loading...",
     disabled: true,

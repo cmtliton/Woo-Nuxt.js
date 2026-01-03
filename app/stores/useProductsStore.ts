@@ -132,12 +132,12 @@ export const useProductsStore = defineStore(
 
     // ৫. হেল্পার মেথডসমূহ
     const getProductsBySlug = (slug: string) => {
-      return products.value.find((product) => product.slug === slug);
+      return products.value.find((product) => product.slug == slug);
     };
 
     const getProductsByCategory = (categoryId: number) => {
       return products.value.filter((product) =>
-        product.categories.some((cat: any) => cat.id === categoryId)
+        product.categories.some((cat: any) => cat.id == categoryId)
       );
     };
 

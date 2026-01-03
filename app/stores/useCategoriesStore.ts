@@ -26,7 +26,7 @@ export const useCategoriesStore = defineStore(
 
     // ৪. স্লাগ দিয়ে ক্যাটাগরি খুঁজে বের করা
     const getCategoriesBySlug = (slug: string) => {
-      return categories.value.find((cat) => cat.slug === slug);
+      return categories.value.find((cat) => cat.slug == slug);
     };
 
     return {

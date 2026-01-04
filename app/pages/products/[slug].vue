@@ -228,7 +228,7 @@ useSeoMeta({
     product.value ? `${product.value.name} | Luxury Furniture` : "Loading...",
   ogDescription: () =>
     product.value?.short_description?.replace(/<[^>]*>?/gm, ""),
-  ogImage: () => product.value?.images[0]?.src,
+  ogImage: product.value?.images[0]?.src,
 });
 </script>
 

@@ -193,10 +193,10 @@ const brandColor = "#3b2822";
 const productsStore = useProductsStore();
 const cartStore = useCartStore();
 
-// ১. স্টোর থেকে সেরা ৮টি প্রোডাক্ট নেওয়া (Featured Logic)
+// ১. স্টোর থেকে সেরা 16টি প্রোডাক্ট নেওয়া (Featured Logic)
 const featuredProducts = computed(() => {
   // আপনি চাইলে এখানে specific ID বা featured: true প্রপার্টি দিয়ে ফিল্টার করতে পারেন
-  return productsStore.products.slice(0, 8);
+  return productsStore.products.slice(10, 22);
 });
 
 const addToCart = (product) => {

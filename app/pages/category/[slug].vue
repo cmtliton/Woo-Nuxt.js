@@ -90,15 +90,45 @@ const breadcrumbs = computed(() => [
 ]);
 
 // SEO Meta Tags
+const { origin } = useRequestURL(); // এটি আপনার সাইটের ডোমেইন (http://localhost:3000 বা https://site.com) নিয়ে আসবে
+
 useSeoMeta({
+  // ১. টাইটেল ফিক্স
   title: () =>
     category.value
       ? `${decodeHtml(category.value.name)} | Luxury Furniture`
       : "Category",
-  description: () =>
-    category.value?.description || "Explore our exclusive collection.",
-  ogTitle: () => category.value?.name,
-  ogImage: () => category.value?.image?.src || "/og-default.jpg",
+
+  // ২. ডেসক্রিপশন থেকে HTML ট্যাগ মুছে ফেলা
+  description: () => {
+    const desc =
+      category.value?.description ||
+      "Explore our exclusive collection of luxury furniture.";
+    return desc.replace(/<[^>]*>?/gm, "").trim(); // এটি <p>, <b> ইত্যাদি ট্যাগ রিমুভ করবে
+  },
+
+  // ৩. ওপেন গ্রাফ (Facebook/WhatsApp) সেটিংস
+  ogTitle: () =>
+    category.value ? decodeHtml(category.value.name) : "Category",
+
+  ogDescription: () => {
+    const desc =
+      category.value?.description || "Explore our exclusive collection.";
+    return desc.replace(/<[^>]*>?/gm, "").trim();
+  },
+
+  // ৪. ইমেজ ইউআরএল ফিক্স (অবশ্যই Absolute URL হতে হবে)
+  ogImage: () => {
+    const imgSrc = category.value?.image?.src;
+    // যদি ইমেজ থাকে তবে সেটি দেখাবে, না থাকলে আপনার লোকাল /og-default.jpg ডোমেইনসহ দেখাবে
+    return imgSrc || `${origin}/og-home.jpg`;
+  },
+
+  // ৫. টুইটার কার্ড (সোশ্যাল মিডিয়া প্রিভিউ বড় দেখানোর জন্য)
+  twitterCard: "summary_large_image",
+  twitterTitle: () =>
+    category.value ? decodeHtml(category.value.name) : "Category",
+  twitterImage: () => category.value?.image?.src || `${origin}/og-home.jpg`,
 });
 
 // HTML Entity ডিকোডিং ফাংশন

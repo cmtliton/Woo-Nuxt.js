@@ -199,6 +199,27 @@ useHead({
       imagesrcset: product.value?.images[0]?.srcset, // If available
     },
   ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        name: product.value?.name,
+        image: product.value?.images?.[0]?.src,
+        description: product.value?.short_description?.replace(
+          /<[^>]*>?/gm,
+          ""
+        ),
+        offers: {
+          "@type": "Offer",
+          priceCurrency: "BDT",
+          price: product.value?.price,
+          availability: "https://schema.org/InStock",
+        },
+      }),
+    },
+  ],
 });
 
 watch(product, (p) => {
@@ -223,12 +244,53 @@ const addToCart = () => {
   // আপনি চাইলে এখানে একটি Snackbar বা নোটিফিকেশন দেখাতে পারেন
 };
 
+const { origin } = useRequestURL(); // এটি আপনার সাইটের বেজ ইউআরএল (https://yourdomain.com) নিয়ে আসবে
+
 useSeoMeta({
+  // ১. ডাইনামিক টাইটেল
   title: () =>
-    product.value ? `${product.value.name} | Luxury Furniture` : "Loading...",
-  ogDescription: () =>
-    product.value?.short_description?.replace(/<[^>]*>?/gm, ""),
-  ogImage: product.value?.images[0]?.src,
+    product.value
+      ? `${product.value.name} | Luxury Furniture`
+      : "Product Details",
+  ogTitle: () =>
+    product.value
+      ? `${product.value.name} | Luxury Furniture`
+      : "Product Details",
+
+  // ২. ডেসক্রিপশন হ্যান্ডলিং (HTML ট্যাগ রিমুভ করে ক্লিন টেক্সট করা)
+  description: () => {
+    // যদি short_description না থাকে তবে মেইন description ব্যবহার করবে
+    const rawDesc =
+      product.value?.short_description ||
+      product.value?.description ||
+      "Premium quality furniture crafted with precision.";
+    return rawDesc.replace(/<[^>]*>?/gm, "").trim();
+  },
+
+  ogDescription: () => {
+    const rawDesc =
+      product.value?.short_description ||
+      product.value?.description ||
+      "Explore our luxury furniture collection.";
+    return rawDesc.replace(/<[^>]*>?/gm, "").trim();
+  },
+
+  // ৩. ইমেজ ইউআরএল ফিক্স (অবশ্যই Absolute হতে হবে)
+  ogImage: () => {
+    const imgSrc = product.value?.images?.[0]?.src;
+    // যদি প্রোডাক্ট ইমেজ থাকে তবে সেটি দেখাবে, না থাকলে সাইটের ডিফল্ট ওজি ইমেজ
+    return imgSrc || `${origin}/og-default.jpg`;
+  },
+
+  // ৪. ই-কমার্সের জন্য অত্যন্ত গুরুত্বপূর্ণ মেটা ট্যাগ
+  ogType: "product",
+  twitterCard: "summary_large_image",
+  twitterTitle: () => (product.value ? product.value.name : "Luxury Furniture"),
+  twitterImage: () =>
+    product.value?.images?.[0]?.src || `${origin}/og-default.jpg`,
+
+  // ৫. অতিরিক্ত সিকিউরিটি (যদি স্লাগ লোড না হয়)
+  ogUrl: () => `${origin}/products/${product.value?.slug || ""}`,
 });
 </script>
 

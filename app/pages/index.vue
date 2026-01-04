@@ -31,7 +31,7 @@
 //const { fetchProducts } = useProducts();
 const cartStore = useCartStore();
 const productsStore = useProductsStore();
-
+const route = useRequestURL();
 const pending = ref(false);
 
 //const { data: pending } = await fetchProducts({ per_page: 100 });
@@ -41,6 +41,6 @@ useSeoMeta({
   title: "Luxury Sofas & Beds | Modern Furniture Store",
   description:
     "Shop our curated collection of high-quality furniture for your home.",
-  ogImage: "/og-home.jpg",
+  ogImage: `${route.origin}/og-home.jpg`,
 });
 </script>

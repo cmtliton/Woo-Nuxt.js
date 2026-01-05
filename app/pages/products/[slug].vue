@@ -1,5 +1,6 @@
 <template>
   <v-container v-if="product" class="py-5 py-md-10">
+    <pre>{{ product.name }}</pre>
     <!-- ১. ব্রেডক্রাম্বস (Breadcrumbs) -->
     <v-breadcrumbs :items="breadcrumbs" class="px-0 text-caption mb-4">
       <template #divider>
@@ -243,54 +244,39 @@ const addToCart = () => {
   cartStore.addToCart({ ...product.value, quantity: quantity.value });
   // আপনি চাইলে এখানে একটি Snackbar বা নোটিফিকেশন দেখাতে পারেন
 };
+const {
+  public: { siteUrl },
+} = useRuntimeConfig();
+const origin = siteUrl || "https://emcfurniture.com";
+watchEffect(() => {
+  if (!product.value) return;
 
-const { origin } = useRequestURL(); // এটি আপনার সাইটের বেজ ইউআরএল (https://yourdomain.com) নিয়ে আসবে
+  const rawDesc =
+    product.value.short_description ||
+    product.value.description ||
+    "Premium quality furniture crafted with precision.";
 
-useSeoMeta({
-  // ১. ডাইনামিক টাইটেল
-  title: () =>
-    product.value
-      ? `${product.value.name} | Luxury Furniture`
-      : "Product Details",
-  ogTitle: () =>
-    product.value
-      ? `${product.value.name} | Luxury Furniture`
-      : "Product Details",
+  const cleanDesc = rawDesc.replace(/<[^>]*>?/gm, "").trim();
 
-  // ২. ডেসক্রিপশন হ্যান্ডলিং (HTML ট্যাগ রিমুভ করে ক্লিন টেক্সট করা)
-  description: () => {
-    // যদি short_description না থাকে তবে মেইন description ব্যবহার করবে
-    const rawDesc =
-      product.value?.short_description ||
-      product.value?.description ||
-      "Premium quality furniture crafted with precision.";
-    return rawDesc.replace(/<[^>]*>?/gm, "").trim();
-  },
+  const image = product.value.images?.[0]?.src || `${origin}/og-default.jpg`;
 
-  ogDescription: () => {
-    const rawDesc =
-      product.value?.short_description ||
-      product.value?.description ||
-      "Explore our luxury furniture collection.";
-    return rawDesc.replace(/<[^>]*>?/gm, "").trim();
-  },
+  useSeoMeta({
+    title: `${product.value.name} | Luxury Furniture`,
+    ogTitle: `${product.value.name} | Luxury Furniture`,
 
-  // ৩. ইমেজ ইউআরএল ফিক্স (অবশ্যই Absolute হতে হবে)
-  ogImage: () => {
-    const imgSrc = product.value?.images?.[0]?.src;
-    // যদি প্রোডাক্ট ইমেজ থাকে তবে সেটি দেখাবে, না থাকলে সাইটের ডিফল্ট ওজি ইমেজ
-    return imgSrc || `${origin}/og-default.jpg`;
-  },
+    description: cleanDesc,
+    ogDescription: cleanDesc,
 
-  // ৪. ই-কমার্সের জন্য অত্যন্ত গুরুত্বপূর্ণ মেটা ট্যাগ
-  ogType: "product",
-  twitterCard: "summary_large_image",
-  twitterTitle: () => (product.value ? product.value.name : "Luxury Furniture"),
-  twitterImage: () =>
-    product.value?.images?.[0]?.src || `${origin}/og-default.jpg`,
+    ogImage: image,
+    twitterImage: image,
 
-  // ৫. অতিরিক্ত সিকিউরিটি (যদি স্লাগ লোড না হয়)
-  ogUrl: () => `${origin}/products/${product.value?.slug || ""}`,
+    ogType: "product",
+    twitterCard: "summary_large_image",
+
+    twitterTitle: product.value.name,
+
+    ogUrl: `${origin}/products/${product.value.slug}`,
+  });
 });
 </script>
 

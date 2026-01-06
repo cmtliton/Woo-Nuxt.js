@@ -1,6 +1,5 @@
 <template>
   <v-container v-if="product" class="py-5 py-md-10">
-    <pre>{{ product.name }}</pre>
     <!-- ১. ব্রেডক্রাম্বস (Breadcrumbs) -->
     <v-breadcrumbs :items="breadcrumbs" class="px-0 text-caption mb-4">
       <template #divider>
@@ -27,6 +26,7 @@
           <div class="position-relative">
             <GlobalLoader v-show="imageLoading" />
             <NuxtImg
+              v-if="product?.images?.length"
               :src="selectedImage || product.images[0]?.src"
               :alt="product.name"
               preload
@@ -44,7 +44,7 @@
 
         <!-- থাম্বনেইল গ্যালারি -->
         <v-row class="mt-2" dense>
-          <v-col v-for="(img, i) in product.images" :key="i" cols="3" sm="2">
+          <v-col v-for="(img, i) in product?.images" :key="i" cols="3" sm="2">
             <v-hover v-slot="{ isHovering, props }">
               <v-card
                 v-bind="props"
@@ -71,18 +71,18 @@
 
       <!-- ৩. ডান পাশ: প্রোডাক্ট ইনফো -->
       <v-col cols="12" md="6" class="ps-md-10">
-        <h2 class="text-h3 mb-2">{{ product.name }}</h2>
+        <h2 class="text-h3 mb-2">{{ product?.name }}</h2>
         <v-rating v-model="rating" density="compact" color="orange" readonly />
         <!-- প্রাইস সেকশন -->
         <div class="d-flex align-center mb-4">
           <span
-            v-if="product.on_sale"
+            v-if="product?.on_sale"
             class="text-h6 text-grey-darken-1 text-decoration-line-through mr-2"
           >
-            ৳{{ product.regular_price }}
+            ৳{{ product?.regular_price }}
           </span>
           <span class="text-h5 text-primary font-weight-black">
-            ৳{{ product.price }}
+            ৳{{ product?.price }}
           </span>
         </div>
 
@@ -139,7 +139,7 @@
           </span>
         </div>
         <div v-if="product.tags?.length" class="text-caption">
-          <span class="font-weight-bold">Tag:</span> {{ product.tags[0].name }}
+          <span class="font-weight-bold">Tag:</span> {{ product?.tags[0].name }}
         </div>
       </v-col>
     </v-row>
@@ -244,39 +244,23 @@ const addToCart = () => {
   cartStore.addToCart({ ...product.value, quantity: quantity.value });
   // আপনি চাইলে এখানে একটি Snackbar বা নোটিফিকেশন দেখাতে পারেন
 };
-const {
-  public: { siteUrl },
-} = useRuntimeConfig();
-const origin = siteUrl || "https://emcfurniture.com";
-watchEffect(() => {
-  if (!product.value) return;
+useSeoMeta({
+  ogTitle: `${product.value.name} | Luxury Furniture`,
+  title: () =>
+    product.value ? `${product.value.name} | EMC Furniture` : "Loading...",
+  ogDescription: () =>
+    product.value?.short_description?.replace(/<[^>]*>?/gm, ""),
+  description: () => product.value?.description?.replace(/<[^>]*>?/gm, ""),
 
-  const rawDesc =
-    product.value.short_description ||
-    product.value.description ||
-    "Premium quality furniture crafted with precision.";
+  ogImage: product.value?.images[0]?.src || "",
+  twitterImage: product.value?.images[0]?.src || "",
 
-  const cleanDesc = rawDesc.replace(/<[^>]*>?/gm, "").trim();
+  ogType: "product",
+  twitterCard: "summary_large_image",
 
-  const image = product.value.images?.[0]?.src || `${origin}/og-default.jpg`;
+  twitterTitle: product.value.name,
 
-  useSeoMeta({
-    title: `${product.value.name} | Luxury Furniture`,
-    ogTitle: `${product.value.name} | Luxury Furniture`,
-
-    description: cleanDesc,
-    ogDescription: cleanDesc,
-
-    ogImage: image,
-    twitterImage: image,
-
-    ogType: "product",
-    twitterCard: "summary_large_image",
-
-    twitterTitle: product.value.name,
-
-    ogUrl: `${origin}/products/${product.value.slug}`,
-  });
+  ogUrl: product.value?.images[0]?.src || "",
 });
 </script>
 

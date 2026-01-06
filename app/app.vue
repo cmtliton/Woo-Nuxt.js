@@ -1,10 +1,9 @@
 <template>
   <v-app>
     <GlobalLoader />
-    <transition name="page" mode="out-in" />
     <NuxtLayout>
       <!-- :key="route.fullPath" যোগ করার ফলে ইউআরএল চেঞ্জ হলে পেজ রিলোড হবে -->
-      <NuxtPage :key="$route.fullPath" />
+      <NuxtPage />
     </NuxtLayout>
   </v-app>
 </template>
@@ -15,3 +14,13 @@ categoriesStore.getCategories.length === 0
   ? categoriesStore.setCategories()
   : null;
 </script>
+<style scoped>
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+</style>

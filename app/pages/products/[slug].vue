@@ -245,22 +245,29 @@ const addToCart = () => {
   // আপনি চাইলে এখানে একটি Snackbar বা নোটিফিকেশন দেখাতে পারেন
 };
 useSeoMeta({
-  ogTitle: `${product.value.name} | Luxury Furniture`,
   title: () =>
     product.value ? `${product.value.name} | EMC Furniture` : "Loading...",
-  ogDescription: () =>
-    product.value?.short_description?.replace(/<[^>]*>?/gm, ""),
-  description: () => product.value?.description?.replace(/<[^>]*>?/gm, ""),
 
-  ogImage: product.value?.images[0]?.src || "",
-  twitterImage: product.value?.images[0]?.src || "",
+  // ogTitle গেটার হিসেবে
+  ogTitle: () =>
+    product.value ? `${product.value.name} | Luxury Furniture` : "",
+
+  // description এবং ogDescription গেটার হিসেবে
+  description: () =>
+    product.value?.description?.replace(/<[^>]*>?/gm, "") || "",
+  ogDescription: () =>
+    product.value?.short_description?.replace(/<[^>]*>?/gm, "") || "",
+
+  // ogImage এবং twitterImage গেটার হিসেবে (সবচেয়ে গুরুত্বপূর্ণ পরিবর্তন)
+  ogImage: () => product.value?.images?.[0]?.src || "",
+  twitterImage: () => product.value?.images?.[0]?.src || "",
 
   ogType: "product",
   twitterCard: "summary_large_image",
 
-  twitterTitle: product.value.name,
+  twitterTitle: () => product.value?.name || "",
 
-  ogUrl: product.value?.images[0]?.src || "",
+  ogUrl: () => `https://emcfurniture.com${route.fullPath}`,
 });
 </script>
 

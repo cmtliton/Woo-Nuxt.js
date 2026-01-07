@@ -26,6 +26,22 @@ export default defineNuxtConfig({
     externals: {
       inline: ["@woocommerce/woocommerce-rest-api"],
     },
+    storage: {
+      db: {
+        driver: "fs",
+        base: "./.data",
+      },
+    },
+  },
+  $production: {
+    nitro: {
+      storage: {
+        db: {
+          driver: "netlify-blobs",
+          name: "db",
+        },
+      },
+    },
   },
   // routeRules: {
   //   // Product listing: Cache for 1 hour, refresh in background

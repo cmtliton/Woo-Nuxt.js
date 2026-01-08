@@ -1,14 +1,21 @@
 /**
  * Sanitize HTML content to prevent XSS attacks
- * Allows safe tags commonly used in product descriptions
  */
 export const sanitizeHtml = (html: string): string => {
   if (!html) return "";
 
+  // ১. চেক করুন এটি সার্ভার সাইড কি না। সার্ভারে 'document' থাকে না।
+  if (import.meta.server || typeof document === "undefined") {
+    // সার্ভার সাইডে আমরা ব্রাউজার DOM ব্যবহার করতে পারবো না।
+    // এখানে আপনি চাইলে ডেসক্রিপশন সরাসরি রিটার্ন করতে পারেন অথবা
+    // সিম্পল মেটা ডেটা হিসেবে প্লেইন টেক্সট দিতে পারেন।
+    return html;
+  }
+
+  // ২. ক্লায়েন্ট সাইড (Browser) লজিক
   const element = document.createElement("div");
   element.innerHTML = html;
 
-  // Define allowed tags
   const allowedTags = [
     "p",
     "br",
@@ -30,51 +37,48 @@ export const sanitizeHtml = (html: string): string => {
     "img",
     "blockquote",
   ];
+
   const allowedAttributes: { [key: string]: string[] } = {
     a: ["href", "title", "target"],
     img: ["src", "alt", "title", "width", "height"],
   };
 
   const sanitizeNode = (node: Node): void => {
-    if (node.nodeType === Node.TEXT_NODE) {
+    // এখানে Node.TEXT_NODE ব্রাউজারে পাওয়া যাবে
+    if (node.nodeType === 3) {
+      // 3 = Node.TEXT_NODE
       return;
     }
 
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      const element = node as HTMLElement;
-      const tagName = element.tagName.toLowerCase();
+    if (node.nodeType === 1) {
+      // 1 = Node.ELEMENT_NODE
+      const el = node as HTMLElement;
+      const tagName = el.tagName.toLowerCase();
 
       if (!allowedTags.includes(tagName)) {
-        // Remove disallowed tags but keep content
-        while (element.firstChild) {
-          element.parentNode?.insertBefore(element.firstChild, element);
+        while (el.firstChild) {
+          el.parentNode?.insertBefore(el.firstChild, el);
         }
-        element.parentNode?.removeChild(element);
+        el.parentNode?.removeChild(el);
       } else {
-        // Remove disallowed attributes
         const allowedAttrs = allowedAttributes[tagName] || [];
-        const attributesToRemove: string[] = [];
+        const attrs = Array.from(el.attributes);
 
-        for (let i = 0; i < element.attributes.length; i++) {
-          const attr = element.attributes.item(i);
-          if (attr && !allowedAttrs.includes(attr.name)) {
-            attributesToRemove.push(attr.name);
+        attrs.forEach((attr) => {
+          if (!allowedAttrs.includes(attr.name)) {
+            el.removeAttribute(attr.name);
           }
-        }
+        });
 
-        attributesToRemove.forEach((attr) => element.removeAttribute(attr));
-
-        // Sanitize href in links to prevent javascript: attacks
-        if (tagName === "a" && element.hasAttribute("href")) {
-          const href = element.getAttribute("href");
+        if (tagName === "a" && el.hasAttribute("href")) {
+          const href = el.getAttribute("href");
           if (href?.startsWith("javascript:") || href?.startsWith("data:")) {
-            element.removeAttribute("href");
+            el.removeAttribute("href");
           }
         }
 
-        // Process child nodes
-        const childNodes = Array.from(element.childNodes);
-        childNodes.forEach(sanitizeNode);
+        const children = Array.from(el.childNodes);
+        children.forEach(sanitizeNode);
       }
     }
   };

@@ -174,16 +174,15 @@
 
 <script setup>
 import { sanitizeHtml } from "~/utils/sanitizeHtml";
-//const { fetchProductBySlug } = useProducts();
 const route = useRoute();
+const { data: product, pending } = useProduct(route.params.slug);
 const cartStore = useCartStore();
-const productsStore = useProductsStore();
-const pending = ref(false);
-const product = computed(() => {
-  const slug = route.params.slug;
-  return productsStore.getProductsBySlug(slug);
-});
-
+//const productsStore = useProductsStore();
+//const pending = ref(false);
+// const product = computed(() => {
+//   const slug = route.params.slug;
+//   return productsStore.getProductsBySlug(slug);
+// });
 const quantity = ref(1);
 const tab = ref("desc");
 const selectedImage = ref(null);

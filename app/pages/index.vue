@@ -4,7 +4,6 @@
     <HomeHero />
     <HomeCategorySection />
     <HomeFeaturedSection />
-    <h1 class="text-h4 mb-6">Premium Furniture</h1>
 
     <v-row v-if="pending">
       <v-col v-for="n in 8" :key="n" cols="12" sm="6" md="4" lg="3">
@@ -13,24 +12,18 @@
     </v-row>
 
     <v-row v-else>
-      <v-col
-        v-for="product in productsStore.getProducts"
-        :key="product.id"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="3"
-      >
-        <ProductCard :product="product" @add-to-cart="cartStore.addToCart" />
+      <v-col>
+        <h1 class="text-h4 mb-6">Premium Furniture</h1>
+        <LoadMore />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script setup>
+import LoadMore from "~/components/product/loadMore.vue";
+
 //const { fetchProducts } = useProducts();
-const cartStore = useCartStore();
-const productsStore = useProductsStore();
 const route = useRequestURL();
 const pending = ref(false);
 

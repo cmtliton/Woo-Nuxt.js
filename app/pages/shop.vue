@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-10">
+  <v-container class="py-3">
     <v-row>
       <!-- ১. সাইডবার ফিল্টার (Desktop) -->
       <v-col cols="12" md="3" class="d-none d-md-block">

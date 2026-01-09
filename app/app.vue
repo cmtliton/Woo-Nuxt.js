@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <GlobalLoader />
     <NuxtLayout>
-      <!-- :key="route.fullPath" যোগ করার ফলে ইউআরএল চেঞ্জ হলে পেজ রিলোড হবে -->
       <NuxtPage />
     </NuxtLayout>
   </v-app>

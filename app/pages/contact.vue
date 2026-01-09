@@ -3,7 +3,7 @@
     <!-- ১. হিরো সেকশন (Banner) -->
     <v-sheet
       color="#3b2822"
-      class="d-flex align-center justify-center text-center py-16"
+      class="d-flex align-center justify-center text-center py-0"
       height="300"
       flat
     >

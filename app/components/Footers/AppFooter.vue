@@ -152,7 +152,7 @@ const services = [
 const links = [
   { title: "Home", to: "/" },
   { title: "Shop", to: "/shop" },
-  { title: "All Chairs", to: "/shop?category=137&page=1" },
+  { title: "All Chairs", to: "/shop" },
   { title: "Meeting Request", to: "/contact" },
   { title: "Contact Us", to: "/contact" },
 ];

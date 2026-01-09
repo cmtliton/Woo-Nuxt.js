@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="product" class="py-5 py-md-10">
+  <v-container v-if="product" class="py-3 py-md-5">
     <!-- ১. ব্রেডক্রাম্বস (Breadcrumbs) -->
     <v-breadcrumbs :items="breadcrumbs" class="px-0 text-caption mb-4">
       <template #divider>
@@ -164,6 +164,7 @@
         </v-window>
       </v-col>
     </v-row>
+    <RelatedProducts :current-product="product" />
   </v-container>
 
   <!-- লোডিং স্টেট -->
@@ -174,7 +175,7 @@
 
 <script setup>
 import { sanitizeHtml } from "~/utils/sanitizeHtml";
-//const { fetchProductBySlug } = useProducts();
+import RelatedProducts from "~/components/product/relatedProducts.vue";
 const route = useRoute();
 const cartStore = useCartStore();
 const productsStore = useProductsStore();
@@ -259,7 +260,9 @@ useSeoMeta({
     product.value?.short_description?.replace(/<[^>]*>?/gm, "") || "",
 
   // ogImage এবং twitterImage গেটার হিসেবে (সবচেয়ে গুরুত্বপূর্ণ পরিবর্তন)
-  ogImage: () => product.value?.images?.[0]?.src || "",
+  ogImage: () =>
+    product.value?.images?.[0]?.src ||
+    "https://emcfurniture.com/assisthem/wp-content/uploads/2025/12/Suspa_Chair_05-1.jpg",
   twitterImage: () => product.value?.images?.[0]?.src || "",
 
   ogType: "product",

@@ -90,7 +90,7 @@ const pending = computed(
 // ৪. ব্রেডক্রাম্বস ডাটা (category.value দিয়ে চেক করা হয়েছে)
 const breadcrumbs = computed(() => [
   { title: "Home", disabled: false, to: "/" },
-  { title: "Categories", disabled: false, to: "/shop" },
+  { title: "Categories", disabled: false, to: "/category" },
   {
     title: category.value ? decodeHtml(category.value.name) : "Loading...",
     disabled: true,

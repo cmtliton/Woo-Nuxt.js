@@ -72,9 +72,9 @@
 
           <v-btn icon color="white" variant="text" @click="openCart">
             <v-badge
-              :content="cartStore.cartItemsCount"
-              :model-value="cartStore.cartItemsCount > 0"
-              color="white"
+              :content="cartStore.totalItems"
+              :model-value="cartStore.totalItems > 0"
+              color="green"
             >
               <v-icon icon="mdi-cart-outline" />
             </v-badge>

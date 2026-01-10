@@ -98,21 +98,28 @@ const breadcrumbs = computed(() => [
 ]);
 
 // ৫. SEO Meta Tags
-const { origin } = useRequestURL();
-
 useSeoMeta({
   title: () =>
     category.value
       ? `${decodeHtml(category.value.name)} | Luxury Furniture`
       : "Category",
   description: () => {
-    const desc = category.value?.description || "Explore our collection.";
+    const desc =
+      categoryProducts.value?.description || "Explore our collection.";
     return desc.replace(/<[^>]*>?/gm, "").trim();
   },
-  ogTitle: () =>
-    category.value ? decodeHtml(category.value.name) : "Category",
-  ogImage: () => category.value?.image?.src || `${origin}/og-home.jpg`,
-  twitterCard: "summary_large_image",
+});
+defineOgImageComponent("NuxtSeo", {
+  title: () =>
+    category.value
+      ? `${decodeHtml(category.value.name)} | Luxury Furniture`
+      : "Category",
+  description: () => {
+    const desc =
+      categoryProducts.value?.description || "Explore our collection.";
+    return desc.replace(/<[^>]*>?/gm, "").trim();
+  },
+  colorMode: "dark",
 });
 
 // HTML Entity ডিকোডিং ফাংশন

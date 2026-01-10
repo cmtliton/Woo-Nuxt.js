@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "vuetify-nuxt-module",
     "@nuxt/image",
     "@nuxt/eslint",
+    "nuxt-og-image",
   ],
   runtimeConfig: {
     // Keys here are server-side only
@@ -33,5 +34,9 @@ export default defineNuxtConfig({
     format: ["webp"],
     quality: 80,
     provider: "ipx",
+  },
+  site: {
+    url: "https://emcfurniture.com",
+    name: "My Awesome Website",
   },
 });

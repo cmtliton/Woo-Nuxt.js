@@ -249,28 +249,21 @@ useSeoMeta({
   title: () =>
     product.value ? `${product.value.name} | EMC Furniture` : "Loading...",
 
-  // ogTitle গেটার হিসেবে
-  ogTitle: () =>
-    product.value ? `${product.value.name} | Luxury Furniture` : "",
-
   // description এবং ogDescription গেটার হিসেবে
   description: () =>
     product.value?.description?.replace(/<[^>]*>?/gm, "") || "",
-  ogDescription: () =>
-    product.value?.short_description?.replace(/<[^>]*>?/gm, "") || "",
-
-  // ogImage এবং twitterImage গেটার হিসেবে (সবচেয়ে গুরুত্বপূর্ণ পরিবর্তন)
-  ogImage: () =>
+});
+defineOgImageComponent("OgImageProductPost", {
+  title: () =>
+    product.value ? `${product.value.name} | Luxury Furniture` : "Product",
+  description: () =>
+    product.value?.description?.replace(/<[^>]*>?/gm, "") ||
+    "Explore our collection.",
+  imageUrl: () =>
     product.value?.images?.[0]?.src ||
     "https://emcfurniture.com/assisthem/wp-content/uploads/2025/12/Suspa_Chair_05-1.jpg",
-  twitterImage: () => product.value?.images?.[0]?.src || "",
-
-  ogType: "product",
-  twitterCard: "summary_large_image",
-
-  twitterTitle: () => product.value?.name || "",
-
-  ogUrl: () => `https://emcfurniture.com${route.fullPath}`,
+  borderColor: "#3b2822",
+  colorMode: "dark",
 });
 </script>
 

@@ -101,7 +101,7 @@ const breadcrumbs = computed(() => [
 useSeoMeta({
   title: () =>
     category.value
-      ? `${decodeHtml(category.value.name)} | Luxury Furniture`
+      ? `${sanitizeHtml(category.value.name)} | Luxury Furniture`
       : "Category",
   description: () => {
     const desc =
@@ -109,16 +109,21 @@ useSeoMeta({
     return desc.replace(/<[^>]*>?/gm, "").trim();
   },
 });
-defineOgImageComponent("NuxtSeo", {
+defineOgImageComponent("OgImageCategoryPost", {
   title: () =>
     category.value
-      ? `${decodeHtml(category.value.name)} | Luxury Furniture`
+      ? `${sanitizeHtml(category.value.name)} | Luxury Furniture`
       : "Category",
   description: () => {
     const desc =
       categoryProducts.value?.description || "Explore our collection.";
     return desc.replace(/<[^>]*>?/gm, "").trim();
   },
+  imageUrl: () =>
+    category.value && category.value.image
+      ? category.value.image.src
+      : "https://emcfurniture.com/assisthem/wp-content/uploads/2025/12/3.Tzri-facetofacesixseaterWorkstation.jpg",
+  borderColor: "#3b2822",
   colorMode: "dark",
 });
 

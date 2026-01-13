@@ -48,7 +48,7 @@ export default defineCachedEventHandler(
     }
   },
   {
-    maxAge: 0, // Cache for 1 hour
+    maxAge: 3600, // Cache for 1 hour
     name: "productBySlug",
     swr: true, // Enable Stale-While-Revalidate
   }

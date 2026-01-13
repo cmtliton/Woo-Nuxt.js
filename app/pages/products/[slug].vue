@@ -164,6 +164,12 @@
         </v-window>
       </v-col>
     </v-row>
+    <FurnitureVideoDialog
+      v-if="
+        product.slug == 'flint-steel-almira-bfc702' ||
+        product.slug == 'eyon-steel-almira-bfc701'
+      "
+    />
     <RelatedProducts :current-product="product" />
   </v-container>
 
@@ -256,6 +262,8 @@ useSeoMeta({
   ogTitle: () => product.value?.name || "",
   ogDescription: () => product.value?.name?.replace(/<[^>]*>?/gm, ""),
   ogImage: () => product.value?.images[0].src || "",
+  ogImageHeight: 600,
+  ogImageWidth: 600,
 });
 </script>
 

@@ -23,7 +23,23 @@ export default defineCachedEventHandler(
       }
 
       // ৪. অ্যারের প্রথম আইটেমটি (সিঙ্গেল অবজেক্ট) রিটার্ন করুন
-      return data[0];
+      return {
+        id: data[0].id,
+        name: data[0].name,
+        slug: data[0].slug,
+        description: data[0].description,
+        short_description: data[0].short_description,
+        price: data[0].price,
+        regular_price: data[0].regular_price,
+        sale_price: data[0].sale_price,
+        images: data[0].images,
+        categories: data[0].categories,
+        related_ids: data[0].related_ids,
+        tags: data[0].tags,
+        attributes: data[0].attributes,
+        variations: data[0].variations,
+        stock_status: data[0].stock_status,
+      };
     } catch (error: any) {
       throw createError({
         statusCode: error.statusCode || 500,
@@ -32,7 +48,7 @@ export default defineCachedEventHandler(
     }
   },
   {
-    maxAge: 3600, // Cache for 1 hour
+    maxAge: 0, // Cache for 1 hour
     name: "productBySlug",
     swr: true, // Enable Stale-While-Revalidate
   }

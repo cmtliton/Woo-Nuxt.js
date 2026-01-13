@@ -10,9 +10,7 @@
     <div class="text-center">
       <!-- ফার্নিচার সাইটের জন্য একটি সুন্দর লোডার -->
       <v-progress-circular indeterminate color="primary" size="64" width="6" />
-      <div class="mt-4 text-h6 font-weight-bold text-primary">
-        EMC Furniture...
-      </div>
+      <div class="mt-4 text-h6 font-weight-bold text-primary">EMC...</div>
     </div>
   </v-overlay>
 </template>

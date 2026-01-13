@@ -55,8 +55,8 @@
               >
                 <NuxtImg
                   :src="img.src"
-                  width="100"
-                  height="100"
+                  width="62"
+                  height="62"
                   aspect-ratio="1"
                   fit="cover"
                   format="webp"
@@ -178,13 +178,15 @@ import { sanitizeHtml } from "~/utils/sanitizeHtml";
 import RelatedProducts from "~/components/product/relatedProducts.vue";
 const route = useRoute();
 const cartStore = useCartStore();
-const productsStore = useProductsStore();
-const pending = ref(false);
-const product = computed(() => {
-  const slug = route.params.slug;
-  return productsStore.getProductsBySlug(slug);
-});
-
+//const productsStore = useProductsStore();
+// const pending = ref(false);
+// const product = computed(() => {
+//   const slug = route.params.slug;
+//   return productsStore.getProductsBySlug(slug);
+// });
+const { data: product, pending } = await useFetch(
+  `/api/products/${route.params.slug}`
+);
 const quantity = ref(1);
 const tab = ref("desc");
 const selectedImage = ref(null);
@@ -245,25 +247,15 @@ const addToCart = () => {
   cartStore.addToCart({ ...product.value, quantity: quantity.value });
   // আপনি চাইলে এখানে একটি Snackbar বা নোটিফিকেশন দেখাতে পারেন
 };
+
 useSeoMeta({
   title: () =>
     product.value ? `${product.value.name} | EMC Furniture` : "Loading...",
-
-  // description এবং ogDescription গেটার হিসেবে
   description: () =>
     product.value?.description?.replace(/<[^>]*>?/gm, "") || "",
-});
-defineOgImageComponent("OgImageProductPost", {
-  title: () =>
-    product.value ? `${product.value.name} | Luxury Furniture` : "Product",
-  description: () =>
-    product.value?.description?.replace(/<[^>]*>?/gm, "") ||
-    "Explore our collection.",
-  imageUrl: () =>
-    product.value?.images?.[0]?.src ||
-    "https://emcfurniture.com/assisthem/wp-content/uploads/2025/12/Suspa_Chair_05-1.jpg",
-  borderColor: "#3b2822",
-  colorMode: "dark",
+  ogTitle: () => product.value?.name || "",
+  ogDescription: () => product.value?.name?.replace(/<[^>]*>?/gm, ""),
+  ogImage: () => product.value?.images[0].src || "",
 });
 </script>
 

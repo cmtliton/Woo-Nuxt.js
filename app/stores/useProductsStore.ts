@@ -132,7 +132,7 @@ export const useProductsStore = defineStore(
 
     // ৫. হেল্পার মেথডসমূহ
     const getProductsBySlug = (slug: string) => {
-      return products.value.find((product) => product.slug == slug);
+      return getProducts.value.find((product) => product.slug === slug);
     };
 
     const getProductsByCategory = (categoryId: number) => {

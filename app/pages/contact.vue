@@ -189,12 +189,15 @@
             <v-spacer />
 
             <!-- Decorative Image or Map Placeholder -->
-            <v-img
+            <NuxtImg
               src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
               height="200"
               cover
               rounded="lg"
-              class="mt-6"
+              fit="cover"
+              format="webp"
+              loading="lazy"
+              class="mt-6 w-100 h-100 transition-swing"
             />
           </v-card>
         </v-col>

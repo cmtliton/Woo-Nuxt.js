@@ -3,44 +3,46 @@
     <!-- ভিডিও ওপেন করার বাটন -->
     <v-btn
       color="#3b2822"
-      prepend-icon="mdi-play-circle-outline"
+      prepend-icon="mdi-play-circle"
       class="text-white font-weight-bold"
       rounded="lg"
       size="large"
+      elevation="2"
       @click="dialog = true"
     >
       Watch Factory Video
     </v-btn>
 
     <!-- ভিডিও ডায়ালগ -->
-    <v-dialog v-model="dialog" max-width="800">
-      <v-card rounded="xl" class="overflow-hidden bg-black">
-        <v-toolbar
-          flat
-          color="transparent"
+    <v-dialog
+      v-model="dialog"
+      max-width="900"
+      transition="dialog-bottom-transition"
+      class="video-dialog"
+    >
+      <v-card rounded="xl" class="bg-black overflow-hidden position-relative">
+        <!-- ক্লোজ বাটন -->
+        <v-btn
+          icon="mdi-close"
+          color="white"
+          variant="tonal"
+          size="small"
           class="position-absolute"
-          style="z-index: 10; right: 0"
-        >
-          <v-spacer />
-          <v-btn
-            icon="mdi-close"
-            color="white"
-            variant="tonal"
-            @click="dialog = false"
-          />
-        </v-toolbar>
+          style="top: 10px; right: 10px; z-index: 20"
+          @click="dialog = false"
+        />
 
         <v-responsive :aspect-ratio="16 / 9">
-          <!-- ভিডিও ট্যাগ (সরাসরি ফাইলের জন্য) বা Iframe (ইউটিউবের জন্য) -->
-          <video
-            v-if="dialog"
-            controls
-            autoplay
-            class="w-100 h-100"
-            src="https://www.youtube.com/watch?v=dsABXMNu-cw"
-          >
-            Your browser does not support the video tag.
-          </video>
+          <!-- ১. যদি ভিডিওটি ডিরেক্ট ফাইল (MP4) হয় -->
+
+          <!-- ২. যদি ভিডিওটি YouTube থেকে হয় (এটি সবচেয়ে বেশি সাপোর্ট করে) -->
+          <iframe
+            v-if="dialog && isYoutube"
+            src="https://youtu.be/VKnv9gsAa1M?list=TLGGpR1QGEpGKNAxNDAxMjAyNg"
+            class="w-100 h-100 border-0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          />
         </v-responsive>
       </v-card>
     </v-dialog>
@@ -49,4 +51,27 @@
 
 <script setup>
 const dialog = ref(true);
+const videoPlayer = ref(null);
+
+// ভিডিওটি ইউটিউব কি না তা ডিফাইন করুন (Toggle)
+const isYoutube = ref(false);
+
+// ডায়ালগ বন্ধ হলে ভিডিও পজ করার জন্য ওয়াচার
+watch(dialog, (val) => {
+  if (!val && videoPlayer.value) {
+    videoPlayer.value.pause();
+  }
+});
 </script>
+
+<style scoped>
+/* ভিডিওর কোয়ালিটি এবং মোবাইল ফিটিং */
+video {
+  object-fit: contain;
+  background: #000;
+}
+
+.video-dialog :deep(.v-overlay__content) {
+  margin: 12px;
+}
+</style>

@@ -164,12 +164,6 @@
         </v-window>
       </v-col>
     </v-row>
-    <FurnitureVideoDialog
-      v-if="
-        product.slug == 'flint-steel-almira-bfc702' ||
-        product.slug == 'eyon-steel-almira-bfc701'
-      "
-    />
     <RelatedProducts :current-product="product" />
   </v-container>
 
@@ -182,22 +176,26 @@
 <script setup>
 import { sanitizeHtml } from "~/utils/sanitizeHtml";
 import RelatedProducts from "~/components/product/relatedProducts.vue";
+import useProduct from "~/composables/useProduct";
+
 const route = useRoute();
 const cartStore = useCartStore();
-//const productsStore = useProductsStore();
-// const pending = ref(false);
-// const product = computed(() => {
-//   const slug = route.params.slug;
-//   return productsStore.getProductsBySlug(slug);
-// });
-const { data: product, pending } = await useFetch(
-  `/api/products/${route.params.slug}`
-);
+const productsStore = useProductsStore();
 const quantity = ref(1);
 const tab = ref("desc");
 const selectedImage = ref(null);
 const rating = ref(0);
 const imageLoading = ref(false);
+
+//const pendingFromPinia = ref(false);
+const productFromPinia = computed(() => {
+  const slug = route.params.slug;
+  return productsStore.getProductsBySlug(slug);
+});
+
+const { productl, pending } = useProduct(route.params.slug);
+const product =
+  productsStore.getProducts.length > 0 ? productFromPinia : productl;
 
 // Preload the main image to improve LCP (Largest Contentful Paint)
 useHead({
@@ -260,7 +258,8 @@ useSeoMeta({
   description: () =>
     product.value?.description?.replace(/<[^>]*>?/gm, "") || "",
   ogTitle: () => product.value?.name || "",
-  ogDescription: () => product.value?.name?.replace(/<[^>]*>?/gm, ""),
+  ogDescription: () =>
+    product.value?.short_description?.replace(/<[^>]*>?/gm, ""),
   ogImage: () => product.value?.images[0].src || "",
   ogImageHeight: 600,
   ogImageWidth: 600,

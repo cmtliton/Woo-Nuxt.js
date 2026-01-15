@@ -4,7 +4,7 @@
     <HomeHero />
     <HomeCategorySection />
     <HomeFeaturedSection />
-
+    <VideoShowcase />
     <v-row v-if="pending">
       <v-col v-for="n in 8" :key="n" cols="12" sm="6" md="4" lg="3">
         <v-skeleton-loader type="card" />
@@ -13,7 +13,7 @@
 
     <v-row v-else>
       <v-col>
-        <h1 class="text-h4 mb-6">Premium Furniture</h1>
+        <h1 class="text-h4 py-6">Premium Furniture</h1>
         <LoadMore />
       </v-col>
     </v-row>

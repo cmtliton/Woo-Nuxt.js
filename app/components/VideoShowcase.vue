@@ -1,5 +1,5 @@
 <template>
-  <v-sheet color="#3b2822" class="py-15" rounded="xl">
+  <v-sheet color="white" rounded="xl">
     <v-container>
       <!-- Video Wrapper with Gradient Border -->
       <div class="gradient-border-container mx-auto">
@@ -53,12 +53,11 @@ const embedUrl = computed(() => {
 .gradient-border-container {
   position: relative;
   width: 100%;
-  max-width: 960px; /* Limit width on large screens */
+  max-width: 980px; /* Limit width on large screens */
 
-  /* The Gradient Color (Purple to Pink) matches your screenshot */
-  background: linear-gradient(45deg, #7c3aed, #d946ef);
+  background: linear-gradient(45deg, #7c3aed, #3b2822, #ec4899);
 
-  padding: 4px; /* Thickness of the border */
+  padding: 6px; /* Thickness of the border */
   border-radius: 24px; /* Rounded corners */
   box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); /* Optional glow effect */
 }
@@ -73,7 +72,11 @@ const embedUrl = computed(() => {
   position: relative;
   height: 0;
   border-radius: 20px; /* Slightly less than parent to fit perfectly */
-  background-color: black; /* Prevents white flashes while loading */
+  background-color: rgb(
+    254,
+    252,
+    252
+  ); /* Prevents white flashes while loading */
 }
 
 /* 

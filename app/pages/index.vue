@@ -3,8 +3,9 @@
   <v-container>
     <HomeHero />
     <HomeCategorySection />
-    <HomeFeaturedSection />
     <VideoShowcase />
+    <HomeFeaturedSection />
+
     <v-row v-if="pending">
       <v-col v-for="n in 8" :key="n" cols="12" sm="6" md="4" lg="3">
         <v-skeleton-loader type="card" />

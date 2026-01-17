@@ -147,7 +147,7 @@ const services = [
   "PEB Structure",
   "Metal Gate",
   "Stair Design",
-  "Interior Design",
+  "Furniture Solutions",
 ];
 const links = [
   { title: "Home", to: "/" },

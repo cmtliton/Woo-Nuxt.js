@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-10">
+  <v-container>
     <!-- ১. ব্রেডক্রাম্বস -->
     <v-breadcrumbs :items="breadcrumbs" class="px-0 text-caption mb-4">
       <template #divider>

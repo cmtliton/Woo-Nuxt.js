@@ -13,9 +13,11 @@ export default defineNuxtConfig({
     // Keys here are server-side only
     wcKey: "",
     wcSecret: "",
+    jwtSecret: "",
     public: {
       // Keys here are exposed to the client
       wcUrl: "",
+      wpApiUrl: "",
     },
   },
   build: {

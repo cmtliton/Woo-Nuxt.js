@@ -71,8 +71,12 @@
 
       <!-- ৩. ডান পাশ: প্রোডাক্ট ইনফো -->
       <v-col cols="12" md="6" class="ps-md-10">
-        <h2 class="text-h3 mb-2">{{ product?.name }}</h2>
+        <h3 class="text-h4 mb-2">{{ product?.name }}</h3>
         <v-rating v-model="rating" density="compact" color="orange" readonly />
+        <p class="text-body-1 text-grey-darken-2 my-6">
+          <!-- eslint-disable-next-line vue/no-v-html -->
+          <span v-html="product?.short_description" />
+        </p>
         <!-- প্রাইস সেকশন -->
         <div class="d-flex align-center mb-4">
           <span

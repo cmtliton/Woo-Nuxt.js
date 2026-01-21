@@ -2,6 +2,7 @@
 <template>
   <v-container>
     <HomeHero />
+    <HomeTrustFeatures />
     <HomeCategorySection />
     <VideoShowcase />
     <HomeFeaturedSection />

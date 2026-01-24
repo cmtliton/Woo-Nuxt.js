@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
       "Basic " +
       Buffer.from(`${config.wcKey}:${config.wcSecret}`).toString("base64");
 
-    const orders = await $fetch(`${config.public.wpApiUrl}/wc/v3/orders`, {
+    const orders = await $fetch(`${config.public.wcUrl}/wp-json/wc/v3/orders`, {
       headers: { Authorization: authHeader },
       params: {
         customer: customerId, // Filter by logged-in user

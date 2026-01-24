@@ -5,7 +5,7 @@
       <v-btn
         icon="mdi-arrow-left"
         variant="text"
-        to="/my-account"
+        to="/dashboard"
         class="mr-4"
       />
       <div>

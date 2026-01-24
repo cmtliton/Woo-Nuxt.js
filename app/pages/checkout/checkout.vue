@@ -122,7 +122,7 @@
 <script setup>
 import { ref } from "vue";
 import { useCartStore } from "~/stores/cart";
-
+const { user } = useAuth();
 const cartStore = useCartStore();
 const step = ref(1);
 const loading = ref(false);
@@ -140,6 +140,8 @@ const placeOrder = async () => {
     })),
     payment_method: paymentMethod.value,
     set_paid: false,
+    customer_id: user.value ? user.value.id : 0,
+    ip_address: getRequestIP(),
   };
 
   try {

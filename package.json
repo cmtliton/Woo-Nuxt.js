@@ -17,6 +17,7 @@
     "@woocommerce/woocommerce-rest-api": "^1.0.2",
     "eslint": "^9.39.2",
     "nuxt": "^4.2.2",
+    "nuxt-auth-utils": "0.5.27",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "sharp": "^0.34.5",

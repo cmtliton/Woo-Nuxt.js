@@ -65,13 +65,10 @@
 
       <!-- আইকন সেকশন -->
       <div class="d-flex align-center">
-        <v-btn icon color="white" variant="text" to="/my-account">
-          <v-icon icon="mdi-account" />
-        </v-btn>
         <v-btn icon color="white" variant="text">
           <v-icon icon="mdi-magnify" />
         </v-btn>
-
+        <ProfileMenu class="mx-2" />
         <v-btn icon color="white" variant="text" @click="openCart">
           <v-badge
             :content="cartStore.totalItems"

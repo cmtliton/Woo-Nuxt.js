@@ -1,3 +1,116 @@
+<script setup>
+const brandColor = "#3b2822";
+const tab = ref("login");
+const errorMessage = ref("");
+const loading = ref(false);
+const showPassword = ref(false);
+const authStore = useAuthStore();
+
+const { isAuthenticated } = useAuth();
+if (isAuthenticated.value) {
+  await navigateTo("/my-account/orders", { replace: true });
+}
+
+const isLoading = ref(false);
+
+// async function handleGitHubLogin() {
+//   isLoading.value = true;
+//   await navigateTo("/auth/github", { external: true });
+// }
+async function handleGoogleLogin() {
+  isLoading.value = true;
+  await navigateTo("/auth/google", { external: true });
+}
+async function handleFacebookLogin() {
+  isLoading.value = true;
+  window.location.href = "/auth/facebook";
+  await navigateTo("/auth/facebook", { external: true });
+}
+const loginForm = reactive({
+  username: "",
+  password: "",
+});
+
+const registerForm = reactive({
+  email: "",
+  username: "",
+  password: "",
+});
+
+const handleLogin = async () => {
+  loading.value = true;
+  try {
+    const success = await authStore.login(
+      loginForm.username,
+      loginForm.password,
+    );
+    if (success) {
+      navigateTo("/my-account/orders"); // সফল হলে অর্ডার পেজে নিয়ে যাবে
+    }
+  } catch (error) {
+    useSnackbarStore().showMessage({
+      msg: "Login failed. Please check your credentials." + error.message,
+      clr: "red",
+      time: 4000,
+    });
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handleRegister = async () => {
+  // Clear previous errors
+  errorMessage.value = "";
+  loading.value = true;
+
+  try {
+    // Basic Validation
+    if (!registerForm.email || !registerForm.password) {
+      throw new Error("Email and Password are required.");
+    }
+
+    // Call your Nuxt API (The one you fixed!)
+    const response = await $fetch("/auth/register", {
+      method: "POST",
+      body: {
+        username: registerForm.username,
+        email: registerForm.email,
+        password: registerForm.password,
+      },
+    });
+
+    // If successful:
+    useSnackbarStore().showMessage({
+      msg: "Registration successful!" + response.message,
+      clr: "success",
+      time: 4000,
+    });
+
+    // Redirect to Login Page
+    await navigateTo("/my-account");
+  } catch (error) {
+    // Handle Errors (Show message from Backend)
+    console.error("Registration Error:", error);
+
+    // Check if error comes from Nuxt/WooCommerce response
+    errorMessage.value =
+      error.data?.message || error.message || "Something went wrong.";
+  } finally {
+    // Always stop loading spinner
+    loading.value = false;
+  }
+};
+
+useSeoMeta({
+  title: "Login / Register | EMC Furniture",
+  description: "Manage your furniture orders and account details.",
+});
+// onMounted(() => {
+//   if (authStore.token) {
+//     navigateTo("/my-account/orders");
+//   }
+// });
+</script>
 <template>
   <v-container
     max-width="1360"
@@ -152,11 +265,14 @@
                 icon="mdi-facebook"
                 variant="outlined"
                 color="blue-darken-2"
+                @click="handleFacebookLogin"
               />
               <v-btn
                 icon="mdi-google"
                 variant="outlined"
                 color="red-darken-1"
+                :loading="isLoading"
+                @click="handleGoogleLogin"
               />
             </div>
           </div>
@@ -165,100 +281,6 @@
     </v-row>
   </v-container>
 </template>
-
-<script setup>
-const brandColor = "#3b2822";
-const tab = ref("login");
-const errorMessage = ref("");
-const loading = ref(false);
-const showPassword = ref(false);
-const authStore = useAuthStore();
-
-const loginForm = reactive({
-  username: "",
-  password: "",
-});
-
-const registerForm = reactive({
-  email: "",
-  username: "",
-  password: "",
-});
-
-const handleLogin = async () => {
-  loading.value = true;
-  try {
-    const success = await authStore.login(
-      loginForm.username,
-      loginForm.password,
-    );
-    if (success) {
-      navigateTo("/my-account/orders"); // সফল হলে অর্ডার পেজে নিয়ে যাবে
-    }
-  } catch (error) {
-    useSnackbarStore().showMessage({
-      msg: "Login failed. Please check your credentials." + error.message,
-      clr: "red",
-      time: 4000,
-    });
-  } finally {
-    loading.value = false;
-  }
-};
-
-const handleRegister = async () => {
-  // Clear previous errors
-  errorMessage.value = "";
-  loading.value = true;
-
-  try {
-    // Basic Validation
-    if (!registerForm.email || !registerForm.password) {
-      throw new Error("Email and Password are required.");
-    }
-
-    // Call your Nuxt API (The one you fixed!)
-    const response = await $fetch("/api/auth/register", {
-      method: "POST",
-      body: {
-        username: registerForm.username,
-        email: registerForm.email,
-        password: registerForm.password,
-      },
-    });
-
-    // If successful:
-    useSnackbarStore().showMessage({
-      msg: "Registration successful!" + response.message,
-      clr: "success",
-      time: 4000,
-    });
-
-    // Redirect to Login Page
-    await navigateTo("/my-account");
-  } catch (error) {
-    // Handle Errors (Show message from Backend)
-    console.error("Registration Error:", error);
-
-    // Check if error comes from Nuxt/WooCommerce response
-    errorMessage.value =
-      error.data?.message || error.message || "Something went wrong.";
-  } finally {
-    // Always stop loading spinner
-    loading.value = false;
-  }
-};
-
-useSeoMeta({
-  title: "Login / Register | EMC Furniture",
-  description: "Manage your furniture orders and account details.",
-});
-// onMounted(() => {
-//   if (authStore.token) {
-//     navigateTo("/my-account/orders");
-//   }
-// });
-</script>
 
 <style scoped>
 .overlay {

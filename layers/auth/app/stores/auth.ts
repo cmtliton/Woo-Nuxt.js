@@ -27,7 +27,7 @@ export const useAuthStore = defineStore(
     };
 
     async function register(details: any) {
-      const { error } = await useFetch("/auth/register", {
+      const { error } = await useFetch("/api/auth/register", {
         method: "POST",
         body: details,
       });
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore(
 
     async function logout() {
       // Call an API endpoint to clear the HTTP-only cookie
-      await useFetch("/auth/logout", { method: "POST" });
+      await useFetch("/api/auth/logout", { method: "POST" });
       user.value = {};
       navigateTo("/");
     }

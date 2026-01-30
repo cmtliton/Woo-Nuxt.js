@@ -1,7 +1,14 @@
 <template>
   <v-container>
     <div class="d-flex align-center mb-6">
-      <h2 class="text-h4 font-weight-bold text-brown-darken-4">My Wishlist</h2>
+      <h2 class="text-h4 font-weight-bold text-brown-darken-4">
+        <v-btn
+          icon="mdi-arrow-left"
+          variant="text"
+          to="/dashboard"
+          class="mr-4"
+        />My Wishlist
+      </h2>
       <v-chip class="ml-4" color="#3b2822" variant="tonal" size="small">
         {{ wishlistStore.items.length }} Items
       </v-chip>

@@ -267,9 +267,14 @@ const menuItems = [
     to: "/dashboard",
   },
   {
-    title: "Orders",
+    title: "My Orders",
     icon: "mdi-package-variant-closed",
     to: "/orders",
+  },
+  {
+    title: "My Wishlist",
+    icon: "mdi-heart-outline",
+    to: "/wishlist",
   },
   {
     title: "Addresses",

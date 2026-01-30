@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-0">
+  <v-container class="pa-0">
     <h2 class="text-h5 font-weight-bold mb-6 text-brown-darken-4">
       <v-btn
         icon="mdi-arrow-left"

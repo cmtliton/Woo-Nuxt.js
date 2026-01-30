@@ -76,10 +76,7 @@
               <!-- ইমেজ সেকশন -->
               <div class="overflow-hidden bg-white" style="height: 280px">
                 <NuxtImg
-                  :src="
-                    product.images[0]?.src ||
-                    'https://picsum.photos/10/6?image=35'
-                  "
+                  :src="product.images[0]?.src || '/logo.png'"
                   :alt="product.name"
                   class="w-100 h-100 transition-swing"
                   :class="{ 'scale-up': isHovering }"

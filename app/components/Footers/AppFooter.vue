@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-grey-darken-4 text-white pt-16 pb-6">
+  <v-footer class="bg-brown-darken-4 text-white pt-16 pb-6">
     <v-container>
       <v-row>
         <!-- ১. কোম্পানি পরিচিতি (Brand & About) -->

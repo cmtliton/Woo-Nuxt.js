@@ -7,7 +7,13 @@
           <v-card flat rounded="xl" border class="pa-4">
             <div class="text-center py-6">
               <v-avatar size="80" color="#3b2822" class="mb-4 elevation-4">
-                <v-img v-if="userAvatar" :src="userAvatar" alt="User" cover />
+                <v-img
+                  v-if="userAvatar"
+                  :src="userAvatar"
+                  alt="User"
+                  cover
+                  referrerpolicy="no-referrer"
+                />
                 <span v-else class="text-h4 text-white">{{ userInitial }}</span>
               </v-avatar>
               <h3 class="text-h6 font-weight-bold">{{ userName }}</h3>

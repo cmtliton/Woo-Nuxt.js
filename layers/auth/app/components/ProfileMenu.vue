@@ -22,7 +22,11 @@
       <template #activator="{ props }">
         <v-btn icon v-bind="props" class="profile-avatar-btn">
           <v-avatar color="#3b2822" size="40" class="elevation-2">
-            <v-img :alt="userName" :src="userAvatar" />
+            <v-img
+              :alt="userName"
+              :src="userAvatar"
+              referrerpolicy="no-referrer"
+            />
           </v-avatar>
         </v-btn>
       </template>

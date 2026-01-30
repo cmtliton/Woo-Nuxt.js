@@ -31,7 +31,14 @@ export default defineCachedEventHandler(
       }
 
       // ৪. অ্যারের প্রথম আইটেমটি (Object) রিটার্ন করা
-      return data[0];
+      return {
+        id: data[0].id,
+        name: data[0].name,
+        slug: data[0].slug,
+        description: data[0].description,
+        image: data[0].image,
+        count: data[0].count,
+      };
     } catch (error: any) {
       // এরর হ্যান্ডলিং
       throw createError({
@@ -44,5 +51,5 @@ export default defineCachedEventHandler(
     maxAge: 3600, // Cache for 1 hour
     name: "categoryBySlug",
     swr: true, // Enable Stale-While-Revalidate
-  }
+  },
 );

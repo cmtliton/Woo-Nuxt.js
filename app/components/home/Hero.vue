@@ -40,9 +40,9 @@
 // ১. ইমেজগুলো অবশ্যই public/images ফোল্ডারে থাকতে হবে
 // ২. পাথ হিসেবে './' এর বদলে সরাসরি '/' ব্যবহার করুন
 const items = [
-  "https://emcfurniture.com/assisthem/wp-content/uploads/2026/01/hero1.webp",
-  "https://emcfurniture.com/assisthem/wp-content/uploads/2026/01/hero2.webp",
-  "https://emcfurniture.com/assisthem/wp-content/uploads/2026/01/hero3.webp",
+  "https://api.emcfurniture.com/wp-content/uploads/2026/01/hero1.webp",
+  "https://api.emcfurniture.com/wp-content/uploads/2026/01/hero2.webp",
+  "https://api.emcfurniture.com/wp-content/uploads/2026/01/hero3.webp",
 ];
 
 const titles = [

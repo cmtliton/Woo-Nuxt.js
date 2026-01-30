@@ -72,19 +72,24 @@ const productsStore = useProductsStore();
 const cartStore = useCartStore();
 
 // ১. ক্যাটাগরিকে 'computed' করতে হবে যাতে ইউআরএল চেঞ্জ হলে এটি আপডেট হয়
-const category = computed(() => {
+const categoryFromPinia = computed(() => {
   return categoriesStore.getCategoriesBySlug(route.params.slug);
 });
-
+const categoryFromServer = useCategory(route.params.slug);
 // ২. প্রোডাক্ট ফিল্টারিং (category.value চেক করে নিতে হবে)
 const categoryProducts = computed(() => {
   if (!category.value) return [];
   return productsStore.getProductsByCategory(category.value.id);
 });
 
+const category =
+  categoriesStore.getCategories.length > 0
+    ? categoryFromPinia
+    : categoryFromServer.category;
+
 // ৩. পেন্ডিং স্টেট হ্যান্ডলিং
 const pending = computed(
-  () => categoriesStore.pending || productsStore.pending
+  () => categoriesStore.pending || productsStore.pending,
 );
 
 // ৪. ব্রেডক্রাম্বস ডাটা (category.value দিয়ে চেক করা হয়েছে)
@@ -100,14 +105,14 @@ const breadcrumbs = computed(() => [
 // ৫. SEO Meta Tags
 useSeoMeta({
   title: () =>
-    category.value
-      ? `${sanitizeHtml(category.value.name)} | Luxury Furniture`
-      : "Category",
-  description: () => {
-    const desc =
-      categoryProducts.value?.description || "Explore our collection.";
-    return desc.replace(/<[^>]*>?/gm, "").trim();
-  },
+    category.value ? `${category.value.name} | EMC Furniture` : "Loading...",
+  description: () =>
+    category.value?.description?.replace(/<[^>]*>?/gm, "") || "",
+  ogTitle: () => category.value?.name || "",
+  ogDescription: () => category.value?.description?.replace(/<[^>]*>?/gm, ""),
+  ogImage: () => category.value?.image.src || "",
+  ogImageHeight: 600,
+  ogImageWidth: 600,
 });
 
 // HTML Entity ডিকোডিং ফাংশন

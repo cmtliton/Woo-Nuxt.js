@@ -61,7 +61,8 @@
               :src="product.images[0]?.src || '/placeholder.jpg'"
               height="200"
               cover
-              class="bg-grey-lighten-4"
+              class="bg-grey-lighten-4 cursor-pointer"
+              @click="ProductRedirect(product.slug)"
             />
 
             <!-- Remove Button (Top Right) -->
@@ -122,6 +123,7 @@
               rounded="lg"
               prepend-icon="mdi-cart-plus"
               :disabled="product.stock_status !== 'instock'"
+              @click="cart.addToCart(product)"
             >
               Add to Cart
             </v-btn>
@@ -146,27 +148,38 @@
 import { useWishlistStore } from "~/stores/wishlist";
 
 const wishlistStore = useWishlistStore();
+const productsStore = useProductsStore();
+const cart = useCartStore();
 const snackbar = ref(false);
 
 // 1. Initialize Wishlist from LocalStorage
-onMounted(() => {
+onMounted(async () => {
   wishlistStore.initWishlist();
+  if (productsStore.getProducts.length === 0) {
+    productsStore.setProducts();
+  }
 });
 
 // 2. Fetch Data Logic
-// উইশলিস্টে থাকা আইডিগুলো কমা দিয়ে স্ট্রিং বানিয়ে API তে পাঠাচ্ছি
-const { data: products, pending } = await useAsyncData(
-  "wishlist-products",
-  async () => {
-    if (wishlistStore.items.length === 0) return [];
+const products = computed(() => {
+  return productsStore.getProducts.filter((product) =>
+    wishlistStore.items.includes(product.id),
+  );
+});
 
-    const idsString = wishlistStore.items.join(",");
-    return await $fetch(`/api/products/by-ids?include=${idsString}`);
-  },
-  {
-    watch: [() => wishlistStore.items.length], // আইটেম ডিলেট হলে অটোমেটিক রিফ্রেশ হবে
-  },
-);
+// উইশলিস্টে থাকা আইডিগুলো কমা দিয়ে স্ট্রিং বানিয়ে API তে পাঠাচ্ছি
+// const { data: products, pending } = await useAsyncData(
+//   "wishlist-products",
+//   async () => {
+//     if (wishlistStore.items.length === 0) return [];
+
+//     const idsString = wishlistStore.items.join(",");
+//     return await $fetch(`/api/products/by-ids?include=${idsString}`);
+//   },
+//   {
+//     watch: [() => wishlistStore.items.length], // আইটেম ডিলেট হলে অটোমেটিক রিফ্রেশ হবে
+//   },
+// );
 
 // 3. Remove Logic
 const removeItem = (id) => {
@@ -178,6 +191,10 @@ const removeItem = (id) => {
 
 // Helper
 const formatPrice = (price) => parseFloat(price).toLocaleString("en-BD");
+
+const ProductRedirect = (id) => {
+  navigateTo(`/products/${id}`);
+};
 
 useSeoMeta({ title: "My Wishlist | EMC Furniture" });
 </script>

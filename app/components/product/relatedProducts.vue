@@ -28,7 +28,10 @@
         lg="3"
       >
         <!-- আপনার আগের তৈরি করা ProductCard কম্পোনেন্ট -->
-        <ProductCard :product="product" />
+        <ProductCard
+          :product="product"
+          @add-to-cart="useCartStore().addToCart"
+        />
       </v-col>
     </v-row>
   </v-container>

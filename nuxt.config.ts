@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     externals: {
       inline: ["@woocommerce/woocommerce-rest-api"],
     },
+    preset: "node-server",
   },
   image: {
     domains: ["emcfurniture.com"],

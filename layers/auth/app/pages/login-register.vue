@@ -13,19 +13,19 @@ if (isAuthenticated.value) {
 
 const isLoading = ref(false);
 
-// async function handleGitHubLogin() {
-//   isLoading.value = true;
-//   await navigateTo("/auth/github", { external: true });
-// }
+async function handleGitHubLogin() {
+  isLoading.value = true;
+  await navigateTo("/auth/github", { external: true });
+}
 async function handleGoogleLogin() {
   isLoading.value = true;
   await navigateTo("/auth/google", { external: true });
 }
-async function handleFacebookLogin() {
-  isLoading.value = true;
-  window.location.href = "/auth/facebook";
-  await navigateTo("/auth/facebook", { external: true });
-}
+// async function handleFacebookLogin() {
+//   isLoading.value = true;
+//   window.location.href = "/auth/facebook";
+//   await navigateTo("/auth/facebook", { external: true });
+// }
 const loginForm = reactive({
   username: "",
   password: "",
@@ -265,7 +265,7 @@ useSeoMeta({
                 icon="mdi-facebook"
                 variant="outlined"
                 color="blue-darken-2"
-                @click="handleFacebookLogin"
+                @click="handleGitHubLogin"
               />
               <v-btn
                 icon="mdi-google"

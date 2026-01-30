@@ -4,67 +4,96 @@ import { randomUUID } from "node:crypto";
 export const findOrCreateCustomer = async (socialUser: any) => {
   const config = useRuntimeConfig();
 
-  // 1. Prepare Auth Headers
-  const authString = `${config.wcKey}:${config.wcSecret}`;
-  const authHeader = "Basic " + Buffer.from(authString).toString("base64");
+  // 1. Setup Keys
+  const consumerKey = config.wcKey;
+  const consumerSecret = config.wcSecret;
+  const apiUrl = config.public.wcUrl;
 
-  // 2. Check if user already exists in WooCommerce
-  // We search by email
-
-  const existingUsers: any[] = await $fetch(
-    `${config.public.wcUrl}/wp-json/wc/v3/customers`,
-    {
-      params: { email: socialUser.email },
-      headers: { Authorization: authHeader },
-    },
-  );
-
-  if (existingUsers.length > 0) {
-    // --- USER EXISTS: RETURN EXISTING DATA ---
-    return existingUsers[0];
+  if (!consumerKey || !consumerSecret) {
+    throw new Error("WooCommerce API Keys are missing");
   }
 
-  // 3. Create NEW User (if not found)
-  // We generate a random crazy password because they will login via Social anyway
-  const randomPassword = crypto.randomUUID() + "-Social-" + Date.now();
+  const authString = `${consumerKey}:${consumerSecret}`;
+  const authHeader = "Basic " + Buffer.from(authString).toString("base64");
+
+  // Helper to fetch user by email
+  const fetchUserByEmail = async (email: string) => {
+    return await $fetch<any[]>(`${apiUrl}/wp-json/wc/v3/customers`, {
+      params: {
+        email: email,
+        role: "all", // Important: Ensure we find Admins too
+      },
+      headers: { Authorization: authHeader },
+    });
+  };
 
   try {
-    const newUser = await $fetch(
-      `${config.public.wcUrl}/wp-json/wc/v3/customers`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "application/json",
-        },
-        body: {
-          email: socialUser.email,
-          first_name: socialUser.name?.split(" ")[0] || "Social",
-          last_name: socialUser.name?.split(" ")[1] || "User",
-          username: socialUser.email, // Use email as username
-          password: randomPassword,
-          avatar_url: socialUser.avatar, // Optional: Save avatar URL if you have a custom field
-        },
+    // ---------------------------------------------------------
+    // STEP 1: Check if user exists
+    // ---------------------------------------------------------
+    const existingUsers = await fetchUserByEmail(socialUser.email);
+
+    if (existingUsers && existingUsers.length > 0) {
+      console.log("✅ User found via Search:", existingUsers[0].id);
+      return existingUsers[0];
+    }
+
+    // ---------------------------------------------------------
+    // STEP 2: Create New User (If not found)
+    // ---------------------------------------------------------
+    const randomPassword = randomUUID() + "-Social-" + Date.now();
+
+    const newUser = await $fetch(`${apiUrl}/wp-json/wc/v3/customers`, {
+      method: "POST",
+      headers: {
+        Authorization: authHeader,
+        "Content-Type": "application/json",
       },
-    );
+      body: {
+        email: socialUser.email,
+        first_name: socialUser.name?.split(" ")[0] || "Social",
+        last_name: socialUser.name?.split(" ")[1] || "User",
+        username: socialUser.email,
+        password: randomPassword,
+        avatar_url: socialUser.avatar,
+      },
+    });
 
     return newUser;
   } catch (error: any) {
-    console.error("WC Creation Error:", error.data?.message);
-    throw new Error("Failed to create WooCommerce user from Social Login");
+    // ---------------------------------------------------------
+    // STEP 3: FAIL-SAFE (The Fix)
+    // ---------------------------------------------------------
+    const errorMessage = error.data?.message || error.message || "";
+
+    // If WooCommerce says "Already registered", we know they exist!
+    if (errorMessage.includes("already registered")) {
+      console.log("⚠️ User exists but search failed. Retrying fetch...");
+
+      // Force fetch again (sometimes specific role permissions hide users in list view)
+      const fallbackUsers = await fetchUserByEmail(socialUser.email);
+
+      if (fallbackUsers.length > 0) {
+        return fallbackUsers[0];
+      }
+    }
+
+    // If still failing, throw the real error
+    console.error("❌ WC Creation Error:", errorMessage);
+    throw createError({
+      statusCode: 400,
+      message: "Social Login Failed: " + errorMessage,
+    });
   }
 };
 
+// Manual Registration
 export const createManualCustomer = async (userData: any) => {
   const config = useRuntimeConfig();
-
-  // 1. Auth Headers তৈরি
-  // আপনার কনফিগের নাম অনুযায়ী wcKey বা wcConsumerKey ব্যবহার করুন
   const authString = `${config.wcKey}:${config.wcSecret}`;
   const authHeader = "Basic " + Buffer.from(authString).toString("base64");
 
   try {
-    // 2. সরাসরি WooCommerce এ রিকোয়েস্ট পাঠানো
     const newUser = await $fetch(
       `${config.public.wcUrl}/wp-json/wc/v3/customers`,
       {
@@ -75,20 +104,15 @@ export const createManualCustomer = async (userData: any) => {
         },
         body: {
           email: userData.email,
-          password: userData.password, // ইউজারের দেওয়া পাসওয়ার্ড
+          password: userData.password,
           first_name: userData.firstName,
           last_name: userData.lastName,
-          username: userData.email, // ইমেইলকেই ইউজারনেম হিসেবে ব্যবহার করছি
+          username: userData.email,
         },
       },
     );
-
     return newUser;
   } catch (error: any) {
-    // 3. এরর হ্যান্ডলিং (যেমন: ইমেইল অলরেডি আছে কি না)
-    console.error("Manual Registration Error:", error.data?.message);
-
-    // WooCommerce এর অরিজিনাল এরর মেসেজটি ফেরত পাঠাবো
     throw createError({
       statusCode: error.response?.status || 500,
       message: error.data?.message || "Registration failed",

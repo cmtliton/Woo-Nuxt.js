@@ -1,40 +1,50 @@
-import { defineEventHandler, getCookie, createError, getQuery } from "h3";
+import { defineEventHandler, createError, getQuery } from "h3";
 
 export default defineEventHandler(async (event) => {
+  // 1. Verify User & Get Session
+  // requireUserSession automatically throws 401 if user is not logged in
+  const { user } = await requireUserSession(event);
+
   const config = useRuntimeConfig();
-  const token = getCookie(event, "auth_token");
   const query = getQuery(event);
 
-  // 1. Verify User is Logged In
-  if (!token) {
-    throw createError({ statusCode: 401, message: "Unauthorized" });
+  // 2. Prepare Auth Credentials
+  if (!config.wcKey || !config.wcSecret) {
+    throw createError({
+      statusCode: 500,
+      message: "WooCommerce API Keys missing",
+    });
   }
 
-  // 2. Validate Token with WP (Optional but recommended)
-  // For performance, you might just decode the JWT locally if you have the secret,
-  // but here we validate by making a lightweight call or trusting the cookie for the proxy call.
-
-  // We need the Customer ID. Ideally, store this in the cookie or pass it from client state
-  // (and verify ownership). For this example, let's assume we pass ID in query,
-  // but in production, decode the JWT to ensure the ID matches the token owner.
-
-  const customerId = query.customerId;
+  const authString = `${config.wcKey}:${config.wcSecret}`;
+  const authHeader = "Basic " + Buffer.from(authString).toString("base64");
 
   try {
-    const authHeader =
-      "Basic " +
-      Buffer.from(`${config.wcKey}:${config.wcSecret}`).toString("base64");
-
+    // 3. Fetch Orders from WooCommerce
+    // We strictly filter by 'user.id' from the secure session
     const orders = await $fetch(`${config.public.wcUrl}/wp-json/wc/v3/orders`, {
-      headers: { Authorization: authHeader },
+      headers: {
+        Authorization: authHeader,
+      },
       params: {
-        customer: customerId, // Filter by logged-in user
-        per_page: 20,
+        customer: (user as any).id, // 🔒 SECURITY: Always use session ID
+        per_page: 10,
+        page: query.page || 1, // Allow pagination
+        orderby: "date",
+        order: "desc",
       },
     });
 
     return orders;
-  } catch (error) {
-    throw createError({ statusCode: 500, message: "Failed to fetch orders" });
+  } catch (error: any) {
+    console.error(
+      "❌ Fetch Orders Error:",
+      error.data?.message || error.message,
+    );
+
+    throw createError({
+      statusCode: error.response?.status || 500,
+      message: "Failed to retrieve order history",
+    });
   }
 });

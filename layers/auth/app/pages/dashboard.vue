@@ -203,6 +203,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: "auth",
+});
 // ১. সেশন এবং রাউটিং ইমপোর্ট
 const { userName, userAvatar, userEmail, clear } = useAuth(); // nuxt-auth-utils
 //const router = useRouter();

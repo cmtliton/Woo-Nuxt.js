@@ -1,5 +1,5 @@
 <template>
-  <v-main class="bg-grey-lighten-5">
+  <v-main class="bg-grey-lighten-5 mt-n16">
     <!-- ১. হিরো সেকশন (Banner) -->
     <v-sheet
       color="#3b2822"

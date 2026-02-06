@@ -8,7 +8,7 @@ const authStore = useAuthStore();
 
 const { isAuthenticated } = useAuth();
 if (isAuthenticated.value) {
-  await navigateTo("/my-account/orders", { replace: true });
+  await navigateTo("/dashboard", { replace: true });
 }
 
 const isLoading = ref(false);
@@ -45,7 +45,7 @@ const handleLogin = async () => {
       loginForm.password,
     );
     if (success) {
-      navigateTo("/my-account/orders"); // সফল হলে অর্ডার পেজে নিয়ে যাবে
+      navigateTo("/dashboard"); // সফল হলে অর্ডার পেজে নিয়ে যাবে
     }
   } catch (error) {
     useSnackbarStore().showMessage({
@@ -87,7 +87,7 @@ const handleRegister = async () => {
     });
 
     // Redirect to Login Page
-    await navigateTo("/my-account");
+    await navigateTo("/dashboard");
   } catch (error) {
     // Handle Errors (Show message from Backend)
     console.error("Registration Error:", error);
@@ -105,24 +105,16 @@ useSeoMeta({
   title: "Login / Register | EMC Furniture",
   description: "Manage your furniture orders and account details.",
 });
-// onMounted(() => {
-//   if (authStore.token) {
-//     navigateTo("/my-account/orders");
-//   }
-// });
 </script>
 <template>
-  <v-container
-    max-width="1360"
-    class="pa-0 fill-height bg-grey-lighten-4 pb-10"
-  >
+  <v-container class="fill-height bg-brown-darken-1 my-10 rounded-lg">
     <v-row no-gutters class="fill-height">
       <!-- বাম পাশ: ব্র্যান্ড ইমেজ (ডেসটপ অনলি) -->
       <v-col cols="12" md="6" class="d-none d-md-flex position-relative">
         <v-img
-          src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=2070"
+          src="/images/login-register-bg.jpg"
           cover
-          class="fill-height"
+          class="fill-height rounded-lg"
         >
           <div
             class="overlay d-flex flex-column justify-center align-center text-white pa-12 text-center"

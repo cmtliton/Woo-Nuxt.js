@@ -31,7 +31,7 @@ export default defineNuxtConfig({
     preset: "node-server",
   },
   image: {
-    domains: ["emcfurniture.com"],
+    domains: ["api.emcfurniture.com"],
     // Use format: ['webp', 'avif'] to automatically convert heavy JPEGs
     format: ["webp"],
     quality: 80,

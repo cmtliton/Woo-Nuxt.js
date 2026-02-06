@@ -184,6 +184,9 @@
 </template>
 
 <script setup>
+definePageMeta({
+  middleware: "auth",
+});
 // 1. Fetch User Data
 const {
   data: customer,

@@ -196,7 +196,9 @@ const cartStore = useCartStore();
 // ১. স্টোর থেকে সেরা 16টি প্রোডাক্ট নেওয়া (Featured Logic)
 const featuredProducts = computed(() => {
   // আপনি চাইলে এখানে specific ID বা featured: true প্রপার্টি দিয়ে ফিল্টার করতে পারেন
-  return productsStore.products.slice(10, 22);
+  return productsStore.products
+    .filter((product) => product.featured === true)
+    .slice(0, 16);
 });
 
 const addToCart = (product) => {

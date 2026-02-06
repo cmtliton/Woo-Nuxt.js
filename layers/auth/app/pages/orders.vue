@@ -5,10 +5,12 @@
 </template>
 
 <script setup>
-const auth = useAuthStore();
-
+definePageMeta({
+  middleware: "auth",
+});
+const { user } = useAuth();
 const { data: orders } = await useFetch("/api/user/orders", {
-  params: { customerId: auth.user?.id },
+  params: { customerId: user?.value.id },
 });
 
 useSeoMeta({

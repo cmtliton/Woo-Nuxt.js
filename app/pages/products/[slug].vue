@@ -148,44 +148,8 @@
         </div>
 
         <!--- ***************Social Share ***************-->
-        <v-divider class="my-4" />
-        <div class="d-flex align-center flex-wrap gap-2">
-          <span
-            class="text-subtitle-2 font-weight-bold mr-2"
-            style="color: #3b2822"
-          >
-            Share with friends:
-          </span>
 
-          <v-btn
-            v-for="social in shareLinks"
-            :key="social.name"
-            :icon="social.icon"
-            :color="social.color"
-            variant="tonal"
-            size="small"
-            class="share-btn ma-1"
-            @click="shareProduct(social.url)"
-          >
-            <v-icon size="20">{{ social.icon }}</v-icon>
-            <v-tooltip activator="parent" location="top">
-              Share on {{ social.name }}
-            </v-tooltip>
-          </v-btn>
-
-          <!-- কপি লিংক বাটন -->
-          <v-btn
-            icon="mdi-link-variant"
-            variant="tonal"
-            size="small"
-            color="grey-darken-2"
-            class="share-btn"
-            @click="copyToClipboard"
-          >
-            <v-icon size="20">mdi-link-variant</v-icon>
-            <v-tooltip activator="parent" location="top">Copy Link</v-tooltip>
-          </v-btn>
-        </div>
+        <ProductSocialShare :title="product.name" />
         <!-- ************end of social share********************-->
       </v-col>
     </v-row>
@@ -297,51 +261,11 @@ const addToCart = () => {
   cartStore.addToCart({ ...product.value, quantity: quantity.value });
 };
 
-/** ************Social Share ******************* */
-const { origin } = useRequestURL();
-const currentUrl = computed(() => `${origin}${route.path}`);
-const productTitle = computed(() => product.value?.name || "EMC Furniture");
-
-const shareLinks = computed(() => [
-  {
-    name: "Facebook",
-    icon: "mdi-facebook",
-    color: "#1877F2",
-    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl.value)}`,
-  },
-  {
-    name: "WhatsApp",
-    icon: "mdi-whatsapp",
-    color: "#25D366",
-    url: `https://api.whatsapp.com/send?text=${encodeURIComponent(productTitle.value + " " + currentUrl.value)}`,
-  },
-  {
-    name: "X (Twitter)",
-    icon: "mdi-twitter",
-    color: "#000000",
-    url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(productTitle.value)}&url=${encodeURIComponent(currentUrl.value)}`,
-  },
-]);
-
-const shareProduct = (url) => {
-  window.open(url, "_blank", "width=600,height=400");
-};
-
-const copyToClipboard = () => {
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(currentUrl.value);
-    // যদি আপনার স্নাকবার স্টোর থাকে তবে এখানে মেসেজ দেখান
-    alert("Link copied to clipboard!");
-  }
-};
-
-/*********************Social Share */
-
 useSeoMeta({
   title: () =>
     product.value ? `${product.value.name} | EMC Furniture` : "Loading...",
   description: () =>
-    product.value?.description?.replace(/<[^>]*>?/gm, "") || "",
+    product.value?.short_description?.replace(/<[^>]*>?/gm, "") || "",
   ogTitle: () => product.value?.name || "",
   ogDescription: () =>
     product.value?.short_description?.replace(/<[^>]*>?/gm, ""),

@@ -51,7 +51,11 @@ const displayLimit = ref(12);
 const loadingMore = ref(false);
 
 // ২. স্টোর থেকে সব প্রোডাক্ট নেওয়া (আপনার আগের কোড অনুযায়ী সর্টেড লিস্ট)
-const allProducts = computed(() => productsStore.getProducts || []);
+const allProducts = computed(
+  () =>
+    productsStore.getProducts.filter((product) => product.featured === false) ||
+    [],
+);
 const pending = computed(() => productsStore.pending);
 
 // ৩. কম্পিউটেড: শুধুমাত্র লিমিট অনুযায়ী প্রোডাক্ট ফিল্টার করা

@@ -8,7 +8,15 @@
             :src="embedUrl"
             title="YouTube video player"
             frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allow="
+              accelerometer;
+              autoplay;
+              clipboard-write;
+              encrypted-media;
+              gyroscope;
+              picture-in-picture;
+              web-share;
+            "
             allowfullscreen
             loading="lazy"
           />
@@ -26,7 +34,7 @@ const props = defineProps({
   videoUrl: {
     type: String,
     // Defaulting to a tech/tracker related video or the one from your context
-    default: "https://youtu.be/dsABXMNu-cw",
+    default: "https://youtu.be/A0x_0KIXHG0",
   },
 });
 

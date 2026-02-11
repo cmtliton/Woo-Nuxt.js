@@ -27,6 +27,22 @@ export const useCartStore = defineStore(
     function addToCart(product: any) {
       isAdding.value = true;
       const existing = items.value.find((i) => i.id === product.id);
+      // Google Tag Manager এ ইভেন্ট পুশ করা
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+          items: [
+            {
+              item_id: product.id,
+              item_name: product.name,
+              price: product.price,
+              quantity: existing ? existing.quantity + 1 : 1,
+            },
+          ],
+        },
+      });
+
       if (existing) {
         existing.quantity++;
       } else {

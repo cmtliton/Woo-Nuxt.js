@@ -63,65 +63,10 @@
 
         <!-- ৩. কন্টাক্ট ফর্ম এবং ম্যাপ সেকশন -->
         <v-col cols="12" md="7" class="mt-10">
-          <v-card flat rounded="xl" class="pa-8 pa-md-12 border">
-            <h2
-              class="text-h4 font-weight-bold mb-6"
-              :style="{ color: brandColor }"
-            >
-              Send a Message
-            </h2>
-            <v-form @submit.prevent="submitForm">
-              <v-row>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    label="Full Name"
-                    variant="outlined"
-                    rounded="lg"
-                    hide-details
-                    class="mb-4"
-                  />
-                </v-col>
-                <v-col cols="12" sm="6">
-                  <v-text-field
-                    label="Phone Number"
-                    variant="outlined"
-                    rounded="lg"
-                    hide-details
-                    class="mb-4"
-                  />
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Subject"
-                    variant="outlined"
-                    rounded="lg"
-                    hide-details
-                    class="mb-4"
-                  />
-                </v-col>
-                <v-col cols="12">
-                  <v-textarea
-                    label="Project Requirements (Furniture/CNC/PEB)"
-                    variant="outlined"
-                    rounded="lg"
-                    rows="4"
-                  />
-                </v-col>
-                <v-col cols="12">
-                  <v-btn
-                    block
-                    size="x-large"
-                    :color="brandColor"
-                    class="font-weight-bold text-white"
-                    rounded="lg"
-                    type="submit"
-                  >
-                    Submit Request
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card>
+          <ContactForm
+            title="Get a Furniture Quote"
+            subtitle="Tell us about your space and we will help you design it."
+          />
         </v-col>
 
         <!-- ৪. সোশ্যাল এবং লোকেশন ডিটেইলস -->
@@ -190,8 +135,8 @@
 
             <!-- Decorative Image or Map Placeholder -->
             <NuxtImg
-              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
-              height="200"
+              src="/images/contact.webp"
+              height="180"
               cover
               rounded="lg"
               fit="cover"
@@ -232,10 +177,6 @@ const contactInfo = [
     link: "https://www.google.com/maps/search/Kond+Mollahbari,+Boliarpur,+Savar,+Dhaka",
   },
 ];
-
-const submitForm = () => {
-  alert("Your message has been sent to EMC Furniture & Engineering!");
-};
 
 useSeoMeta({
   title: "Contact Us | EMC Furniture & Engineering",

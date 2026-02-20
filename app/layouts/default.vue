@@ -3,13 +3,16 @@
     <NavBarsTabByHamBergerMenu />
     <v-main>
       <NuxtPage />
+      <HelpDesk />
     </v-main>
-    <HelpDesk />
+
+    <ScrollToTop />
     <FootersAppFooter />
   </v-container>
 </template>
 <script setup>
 import NavBarsTabByHamBergerMenu from "~/components/NavBars/TabByHamBergerMenu.vue";
+import ScrollToTop from "~/components/ScrollToTop.vue";
 const productsStore = useProductsStore();
 productsStore.getProducts.length === 0 ? productsStore.setProducts() : null;
 </script>

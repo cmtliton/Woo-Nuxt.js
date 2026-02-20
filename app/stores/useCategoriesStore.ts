@@ -38,5 +38,5 @@ export const useCategoriesStore = defineStore(
   },
   {
     persist: true, // ব্রাউজার রিফ্রেশ করলেও ডাটা হারাবে না
-  }
+  },
 );

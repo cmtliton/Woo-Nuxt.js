@@ -1,7 +1,7 @@
 <template>
-  <v-container class="py-16">
+  <v-container class="py-4">
     <!-- ১. সেকশন হেডার -->
-    <div class="text-center mb-12">
+    <div class="text-center mb-4">
       <h2 class="text-h3 font-weight-bold mb-3" :style="{ color: brandColor }">
         Shop by Category
       </h2>
@@ -126,12 +126,12 @@ const decodeHtml = (html) => {
 
   // Hex numeric entities: &#x1F600; etc.
   decoded = decoded.replace(/&#x([0-9A-Fa-f]+);/g, (_, hex) =>
-    String.fromCharCode(parseInt(hex, 16))
+    String.fromCharCode(parseInt(hex, 16)),
   );
 
   // Decimal numeric entities: &#169; etc.
   decoded = decoded.replace(/&#(\d+);/g, (_, dec) =>
-    String.fromCharCode(parseInt(dec, 10))
+    String.fromCharCode(parseInt(dec, 10)),
   );
 
   return decoded;

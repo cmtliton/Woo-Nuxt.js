@@ -1,11 +1,8 @@
 <template>
-  <v-container
-    max-width="1360"
-    class="pa-0 mb-10 overflow-hidden rounded-lg hero-container"
-  >
+  <v-container class="pa-0 mb-2 overflow-hidden rounded-lg hero-container">
     <!-- carousel height এবং NuxtImg height এক হতে হবে -->
     <v-carousel
-      height="460"
+      :height="mobile ? 230 : 460"
       :transition-duration="600"
       hide-delimiter-background
       show-arrows="hover"
@@ -14,8 +11,8 @@
       <v-carousel-item v-for="(src, i) in items" :key="i" class="hero-item">
         <NuxtImg
           :src="src"
-          width="1360"
-          height="460"
+          :width="mobile ? 360 : 1360"
+          :height="mobile ? 230 : 460"
           fit="cover"
           format="webp"
           :loading="i === 0 ? 'eager' : 'lazy'"
@@ -26,9 +23,20 @@
         <!-- Overlay Content -->
         <div class="hero-overlay">
           <div class="hero-content">
-            <h1 class="hero-title">{{ titles[i] }}</h1>
-            <p class="hero-subtitle">{{ subtitles[i] }}</p>
-            <NuxtLink to="/shop" class="hero-btn">Shop Now</NuxtLink>
+            <h1 v-if="!mobile" class="hero-title">
+              {{ titles[i] }}
+            </h1>
+            <h2 v-else class="hero-title-mobile">
+              {{ titles[i] }}
+            </h2>
+            <p :class="mobile ? 'hero-subtitle-mobile' : 'hero-subtitle'">
+              {{ subtitles[i] }}
+            </p>
+            <NuxtLink
+              to="/shop"
+              :class="mobile ? 'hero-btn-mobile' : 'hero-btn'"
+              >Shop Now</NuxtLink
+            >
           </div>
         </div>
       </v-carousel-item>
@@ -37,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+const { mobile } = useDisplay();
 // ১. ইমেজগুলো অবশ্যই public/images ফোল্ডারে থাকতে হবে
 // ২. পাথ হিসেবে './' এর বদলে সরাসরি '/' ব্যবহার করুন
 const items = [
@@ -176,7 +185,9 @@ useHead({
   .hero-title {
     font-size: 32px;
   }
-
+  .hero-title-mobile {
+    font-size: 24px;
+  }
   .hero-subtitle {
     font-size: 16px;
   }
@@ -192,5 +203,31 @@ useHead({
   .reduced-motion-info {
     display: block;
   }
+}
+.hero-title-mobile {
+  font-size: 24px;
+  font-weight: 400;
+  color: white;
+  margin-bottom: 10px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+.hero-subtitle-mobile {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 32px;
+  line-height: 1.6;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+.hero-btn-mobile {
+  display: inline-block;
+  background-color: #ff6b35;
+  color: white;
+  text-decoration: none;
+  border-radius: 1px;
+  font-weight: 200;
+  font-size: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(255, 107, 53, 0.3);
 }
 </style>

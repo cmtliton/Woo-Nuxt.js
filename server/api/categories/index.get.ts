@@ -48,5 +48,10 @@ export default defineCachedEventHandler(
     maxAge: 3600, // Cache for 1 hour
     name: "categoriesList",
     swr: true, // Enable Stale-While-Revalidate
-  }
+    getKey: (event) => {
+      const query = getQuery(event);
+      const per_page = query.per_page || 100;
+      return `categoriesList:per_page=${per_page}`;
+    },
+  },
 );

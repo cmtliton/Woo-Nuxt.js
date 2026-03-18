@@ -166,7 +166,7 @@ const cartStore = useCartStore();
 // ১. রিয়্যাক্টিভ স্টেট (Query থেকে Number-এ কনভার্ট করা হয়েছে)
 const page = ref(route.query.page ? Number(route.query.page) : 1);
 const selectedCategory = ref(
-  route.query.category ? Number(route.query.category) : null
+  route.query.category ? Number(route.query.category) : null,
 );
 const sortBy = ref(route.query.sort || "date");
 const mobileDrawer = ref(false);
@@ -209,7 +209,7 @@ watch(
   () => {
     applyFilters();
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 // ৫. ক্যাটাগরি ফিল্টার ক্লিক হ্যান্ডলার
@@ -240,10 +240,40 @@ const decodeHtml = (html) => {
   return txt.value;
 };
 
+const origin = "https://emcfurniture.com";
+const currentUrl = `${origin}/shop`; // আপনার শপ পেজের লিংক
+
 useSeoMeta({
-  title: "Shop Premium Furniture | Modern Home & Office Collection",
+  // ১. Main SEO Tags (Search Engine Results)
+  title: "Shop Premium Home & Office Furniture | EMC Furniture",
   description:
+    "Browse EMC Furniture's extensive collection of modern sofas, beds, TV cabinets, dining tables, and office setups. High-quality, durable, and stylish designs at the best prices.",
+
+  // ২. Open Graph (Facebook, WhatsApp, LinkedIn)
+  ogType: "website",
+  ogUrl: currentUrl,
+  ogTitle: "Shop Modern Furniture Collection | EMC Furniture",
+  ogDescription:
+    "Upgrade your living and workspace. Explore our premium collection of durable and stylish furniture tailored for your needs.",
+  ogImage: `${origin}/og-home.jpg`, // শপ পেজের জন্য একটি সুন্দর ব্যানার ইমেজের লিংক দিন
+  ogSiteName: "EMC Furniture & Engineering",
+
+  // ৩. Twitter Cards (X)
+  twitterCard: "summary_large_image",
+  twitterTitle: "Shop Premium Furniture | EMC Furniture",
+  twitterDescription:
     "Explore our vast collection of sofas, beds, tables, and chairs for your home and office.",
+  twitterImage: `${origin}/og-home.jpg`,
+});
+
+// ৪. Canonical URL (Duplicate Content থেকে বাঁচার জন্য)
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: currentUrl,
+    },
+  ],
 });
 </script>
 

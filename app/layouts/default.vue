@@ -13,6 +13,9 @@
 <script setup>
 import NavBarsTabByHamBergerMenu from "~/components/NavBars/TabByHamBergerMenu.vue";
 import ScrollToTop from "~/components/ScrollToTop.vue";
-const productsStore = useProductsStore();
-productsStore.getProducts.length === 0 ? productsStore.setProducts() : null;
+const categoriesStore = useCategoriesStore();
+// ক্যাটাগরি স্টোর ইনিশিয়ালাইজ করা
+categoriesStore.getCategories.length === 0
+  ? categoriesStore.setCategories()
+  : null;
 </script>

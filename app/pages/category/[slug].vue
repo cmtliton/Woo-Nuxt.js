@@ -123,6 +123,7 @@ function decodeHtml(html) {
   txt.innerHTML = html;
   return txt.value;
 }
+productsStore.getProducts.length === 0 ? productsStore.setProducts() : null;
 </script>
 
 <style scoped>

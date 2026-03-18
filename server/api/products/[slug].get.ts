@@ -51,5 +51,9 @@ export default defineCachedEventHandler(
     maxAge: 3600, // Cache for 1 hour
     name: "productBySlug",
     swr: true, // Enable Stale-While-Revalidate
-  }
+    getKey: (event) => {
+      const slug = getRouterParam(event, "slug");
+      return `productBySlug:${slug}`;
+    },
+  },
 );

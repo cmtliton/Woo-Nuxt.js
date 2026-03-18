@@ -71,5 +71,8 @@ export default defineNuxtConfig({
   },
   routeRules: {
     "/": { prerender: true },
+    "/shop": { swr: true },
+    "/products/**": { swr: 5600 },
+    "/category/**": { swr: 5600 },
   },
 });

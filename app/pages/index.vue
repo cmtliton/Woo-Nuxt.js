@@ -31,7 +31,7 @@ const pending = ref(false);
 
 //const { data: pending } = await fetchProducts({ per_page: 100 });
 
-const { origin } = useRequestURL(); // আপনার সাইটের ডোমেইন অটোমেটিক পাওয়ার জন্য
+const { origin } = useRequestURL() || { origin: "https://emcfurniture.com" }; // আপনার সাইটের ডোমেইন অটোমেটিক পাওয়ার জন্য
 
 useHead({
   script: [
@@ -41,14 +41,14 @@ useHead({
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
         name: "EMC Furniture & Engineering",
-        alternateName: "Headless Ecommerce & Growth Agency",
+        alternateName: "Furniture Design & Manufacturing",
         image: `${origin}/og-home.jpg`,
         url: origin,
         telephone: "+8801301648832",
         priceRange: "$$",
         address: {
           "@type": "PostalAddress",
-          streetAddress: "Kond Mollahbari, Boliarpur",
+          streetAddress: "Konda Mollahbari, Boliarpur",
           addressLocality: "Savar",
           addressRegion: "Dhaka",
           postalCode: "1340",
@@ -77,14 +77,16 @@ useHead({
           "http://m.me/emcfurnitureandengineering",
         ],
         description:
-          "Headless WooCommerce Expert & Luxury Furniture Manufacturer. We provide Nuxt.js ecommerce solutions, high-converting landing pages, and advanced Google Analytics tracking with Facebook Marketing.",
+          "CNC Cutting, PEB, Metal Gate, Stair Design, Interior & Furniture Solutions under one roof! We work hard to create products that are beautiful, functional, and built to last.",
         serviceType: [
-          "Headless WooCommerce Store Design",
-          "High-Converting Landing Page Design",
-          "Facebook Ads & Digital Marketing",
-          "Google Analytics 4 & Conversion Tracking",
+          "Furniture Design & Manufacturing",
+          "CNC Cutting & Metal Fabrication",
+          "PEB Structures & Steel Fabrication",
+          "Metal Gate Design & Fabrication",
           "CNC Cutting & Metal Fabrication",
           "Luxury Furniture Solutions",
+          "Stair Design & Fabrication",
+          "Interior Solutions",
         ],
         founder: {
           "@type": "Person",
@@ -97,9 +99,30 @@ useHead({
 
 // SEO Meta
 useSeoMeta({
-  title: "Luxury Sofas & Beds | Modern Furniture Store",
+  // ১. Main SEO Tags
+  title: "Premium Modern Furniture in Bangladesh | EMC Furniture",
   description:
-    "Shop our curated collection of high-quality furniture for your home.",
+    "Discover stylish, durable, and premium home and office furniture at EMC Furniture & Engineering. Shop luxury sofas, beds, TV cabinets, and more online.",
+
+  // ২. Open Graph (Facebook, LinkedIn, WhatsApp, etc.)
+  ogType: "website",
+  ogUrl: origin,
+  ogTitle: "EMC Furniture & Engineering | Best Furniture Store in BD",
+  ogDescription:
+    "Upgrade your living space with our premium collection of modern furniture. High-quality sofas, beds, and smart storage solutions.",
   ogImage: `${origin}/og-home.jpg`,
+  ogSiteName: "EMC Furniture & Engineering",
+
+  // ৩. Twitter Cards (X)
+  twitterCard: "summary_large_image",
+  twitterTitle: "Premium Modern Furniture | EMC Furniture",
+  twitterDescription:
+    "Shop our curated collection of high-quality home and office furniture.",
+  twitterImage: `${origin}/og-home.jpg`,
+
+  // ৪. Theme Color (Mobile Browser Toolbar Color)
+  themeColor: "#3b2822",
 });
+const productsStore = useProductsStore();
+productsStore.setProducts();
 </script>

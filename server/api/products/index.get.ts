@@ -19,5 +19,13 @@ export default defineCachedEventHandler(
   {
     maxAge: 3600, // Cache for 1 hour
     swr: true, // Enable Stale-While-Revalidate
-  }
+    name: "productsList",
+    getKey: (event) => {
+      const query = getQuery(event);
+      const category = query.category || "all";
+      const page = query.page || 1;
+      const per_page = query.per_page || 12;
+      return `productsList:category=${category}:page=${page}:per_page=${per_page}`;
+    },
+  },
 );

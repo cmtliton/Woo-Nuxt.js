@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="py-16 bg-grey-lighten-5">
+  <v-sheet class="py-4 bg-grey-lighten-5">
     <v-container>
       <!-- ১. সেকশন হেডার -->
       <v-row align="center" class="mb-10">

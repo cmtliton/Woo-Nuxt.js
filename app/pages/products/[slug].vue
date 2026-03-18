@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-container v-if="product" class="py-2 py-md-2">
     <!-- ১. ব্রেডক্রাম্বস (Breadcrumbs) -->
@@ -6,7 +7,6 @@
         <v-icon icon="mdi-chevron-right" size="x-small" />
       </template>
     </v-breadcrumbs>
-
     <v-row>
       <!-- ২. বাম পাশ: ইমেজ গ্যালারি -->
       <v-col cols="12" md="6">
@@ -73,10 +73,12 @@
       <v-col cols="12" md="6" class="ps-md-10">
         <h3 class="text-h4 mb-2">{{ product?.name }}</h3>
         <v-rating v-model="rating" density="compact" color="orange" readonly />
-        <p class="text-body-1 text-grey-darken-2 my-6">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-html="product?.short_description" />
-        </p>
+
+        <div
+          class="text-body-1 text-grey-darken-2 my-6"
+          v-html="sanitizedShortDescription"
+        />
+
         <!-- প্রাইস সেকশন -->
         <div class="d-flex align-center mb-4">
           <span
@@ -250,7 +252,9 @@ const sanitizedDescription = computed(() => {
     product.value?.description || product.value?.short_description || "",
   );
 });
-
+const sanitizedShortDescription = computed(() => {
+  return sanitizeHtml(product.value?.short_description || "");
+});
 const breadcrumbs = computed(() => [
   { title: "Home", disabled: false, to: "/" },
   { title: "Shop", disabled: false, to: "/shop" },

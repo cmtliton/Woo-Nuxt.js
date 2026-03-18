@@ -96,7 +96,7 @@
             <div class="d-flex align-start mb-4">
               <v-icon icon="mdi-map-marker" :color="brandColor" class="mr-3" />
               <div class="text-body-2 text-grey-lighten-2">
-                Kond Mollahbari, Boliarpur, Savar, Dhaka.
+                Konda Mollahbari, Boliarpur, Savar, Dhaka.
               </div>
             </div>
 
@@ -135,6 +135,14 @@
         <div class="text-caption text-grey mb-4 mb-md-0">
           © {{ new Date().getFullYear() }}
           <strong>EMC Furniture & Engineering</strong>. All Rights Reserved.
+          Developed by
+          <a
+            href="https://assisthem.netlify.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white text-decoration-none"
+            >AssisThem</a
+          >.
         </div>
 
         <!-- পেমেন্ট মেথড আইকনস (Realistic Trust Building) -->
